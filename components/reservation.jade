@@ -1,0 +1,51 @@
+template(name='reservation')
+    .ui.padded.stackable.grid
+        .sixteen.wide.column
+            .ui.header reservation
+            with asset
+                a.ui.icon.button(href="/shop/#{_id}/view") 
+                    i.chevron.left.icon
+                .ui.inline.header
+                    |#{title}
+                div
+                .ui.small.inline.header available
+                    if available
+                        i.green.check.icon
+                    else
+                        i.ban.icon
+                .ui.icon.button.check_availability
+                    i.refresh.icon
+                .ui.small.inline.header $#{hourly_rate}/hour
+                unless reservation.confirmed
+                    if asset.available
+                        with reservation
+                            .ui.button.reserve_now reserve now
+                with reservation
+                    unless confirmed
+                        +datetime_edit key='start_datetime' label='start date/time' direct=true
+                        +datetime_edit key='end_datetime' label='end date/time' direct=true
+                        //- +date_edit key='start_date' label='date' direct=true
+                        //- +time_edit key='start_time' label='time' direct=true
+                        //- +time_edit key='end_time' label='time' direct=true
+                        .ui.large.basic.label duration #{minute_duration} mins/#{hour_duration} hrs
+                        .ui.large.basic.label cost $#{reservation_cost}
+                        .ui.small.header presets
+                        +reservation_duration_preset length=15 label='15'
+                        +reservation_duration_preset length=30 label='30 minutes'
+                        +reservation_duration_preset length=60 label='1 hour'
+                        +reservation_duration_preset length=120 label='2 hours'
+                        .ui.big.fluid.green.button.confirm confirm #{minute_duration} min reservation for $#{reservation_cost}
+                    else 
+                        .ui.big.header confirmed
+                        .ui.header #{minute_duration} mins 
+                        .ui.header $#{reservation_cost}
+                        .ui.button.unconfirm 
+                            i.ban.icon
+                            |unconfirm
+
+
+
+template(name='reservation_duration_preset')
+    .ui.button.set_reservation_duration #{label}
+                
+            

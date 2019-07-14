@@ -1,0 +1,116 @@
+template(name='events')
+    .ui.padded.stackable.grid.header-wrapper
+        .ui.hidden.divider
+        .row
+            .four.wide.column
+                h1.ui.massive.inline.header 
+                    //- +i name='calendar'
+                    i.calendar.icon
+                    |events
+                .ui.icon.large.button.new_event
+                    i.green.plus.icon
+                +cloud filter='event'
+            .twelve.wide.column
+                .ui.centered.four.cards
+                    each event_items
+                        +event_item
+                        
+                        
+template(name='event_card_template')
+    .ui.result.stackable.grid.segment(class=loading_class)
+        if image_id
+            .four.wide.column
+                img.ui.rounded.image(src="{{c.url image_id width=400 height=400 gravity='face' crop='fill'}}")
+        else
+            .four.wide.column
+                i.massive.user.calendar.icon
+        .twelve.wide.column
+            .content
+                .ui.header #{title}
+                .ui.small.header #{start_datetime}
+                .ui.small.header #{end_datetime}
+                .extra
+                    a.ui.icon.large.basic.button(href="/event/#{_id}" title='view')
+                        i.right.chevron.large.icon
+                    each tags
+                        .ui.basic.label #{this}
+                    each date_tags
+                        .ui.basic.label #{this}
+            .content
+                |#{attending_usernames.length} attendees
+                each attending_usernames
+                    .ui.basic.label #{this}
+        
+            
+            
+template(name='event_item')
+    .ui.link.card.event_card
+        .image
+            img(src="{{c.url image_id height=300 crop='lpad'}}")
+        .content
+            .header #{title}
+            |!{description}
+        .content
+            i.small.calendar.icon
+            each date_tags
+                .ui.small.basic.label #{this}
+        .content
+            |#{attending_usernames.length} attendees
+            each attending_usernames
+                .ui.basic.label #{this}
+
+template(name='event_page')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .sixteen.wide.column
+                    h1.ui.center.aligned.header #{title}
+            .row
+                .four.wide.column
+                    if can_edit
+                        a.ui.icon.button(href="/event/#{_id}/edit" title='edit')
+                            +i name='settings'
+                    +array_view key='tags' icon='tags' direct=true
+                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
+                    +array_view key='date_tags' label='date tags' icon='calendar' direct=true
+                .six.wide.column
+                    +image_view key='image_id' direct=true
+                    +html_view key='description' direct=true
+                .five.wide.column
+                    +datetime_view key='start_datetime' label='start date/time' direct=true
+                    div
+                    +datetime_view key='end_datetime' label='end date/time' direct=true
+                    .ui.header attendees
+                    if attending 
+                        .ui.green.button.mark_unattending 
+                            i.checkmark.icon
+                            |attending
+                    else
+                        .ui.button.mark_attending
+                            i.green.checkmark.icon
+                            |mark attending
+                    each attending_usernames 
+                        .ui.large.basic.label #{this}
+                    +voting_full
+                    +comments
+
+template(name='event_edit')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .five.wide.column
+                    .ui.inline.header #{title}
+                    a.ui.large.basic.icon.button(href="/event/#{_id}")
+                        i.big.green.checkmark.icon
+                    .ui.basic.icon.button.delete_event_item
+                        i.red.remove.icon
+                    +text_edit key='title' icon='header' direct=true
+                    +array_edit key='tags' icon='tags' direct=true
+                    +array_edit key='location_tags' label='location tags' icon='marker' direct=true
+                    +array_edit key='date_tags' label='date tags' icon='calendar' direct=true
+                .six.wide.column
+                    +image_edit key='image_id' direct=true
+                    +html_edit key='description' direct=true
+                .five.wide.column
+                    +datetime_edit key='start_datetime' label='start date/time' direct=true
+                    +datetime_edit key='end_datetime' label='end date/time' direct=true

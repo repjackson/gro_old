@@ -1,0 +1,83 @@
+template(name='groups')
+    .ui.padded.stackable.grid.header-wrapper
+        .ui.hidden.divider
+        .row
+            .four.wide.column
+                h1.ui.massive.inline.header 
+                    //- +i name='groups'
+                    i.users.icon
+                    |groups
+                .ui.icon.large.button.new_group
+                    i.green.plus.icon
+                +cloud filter='group'
+            .twelve.wide.column
+                .ui.centered.four.cards
+                    each group_items
+                        +group_item
+                        
+                        
+                        
+template(name='group_item')
+    .ui.link.card.group_card
+        .image
+            img(src="{{c.url image_id height=300 crop='lpad'}}")
+        .content
+            .header #{title}
+            |!{description}
+        .content
+            i.small.groups.icon
+            each date_tags
+                .ui.small.basic.label #{this}
+        .content
+            |#{attending_usernames.length} members
+            each members
+                .ui.basic.label #{this}
+
+template(name='group_page')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .twelve.wide.column
+                    h1.ui.header #{title}
+            .row
+                .four.wide.column
+                    if can_edit
+                        a.ui.icon.button(href="/group/#{_id}/edit" title='edit')
+                            +i name='settings'
+                    +array_view key='tags' icon='tags' direct=true
+                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
+                    +array_view key='date_tags' label='date tags' icon='groups' direct=true
+                .six.wide.column
+                    +image_view key='image_id' direct=true
+                    +html_view key='description' direct=true
+                .five.wide.column
+                    .ui.header members
+                    if is_member 
+                        .ui.button.leave 
+                            i.ban.grey.icon
+                            |leave
+                    else
+                        .ui.button.join
+                            i.green.checkmark.icon
+                            |join
+                    each members 
+                        .ui.large.basic.label #{this}
+
+
+
+template(name='group_edit')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .five.wide.column
+                    .ui.inline.header #{title}
+                    a.ui.large.basic.icon.button(href="/group/#{_id}")
+                        i.big.green.checkmark.icon
+                    .ui.basic.icon.button.delete_group_item
+                        i.red.remove.icon
+                    +text_edit key='title' icon='header' direct=true
+                    +array_edit key='tags' icon='tags' direct=true
+                    +array_edit key='location_tags' label='location tags' icon='marker' direct=true
+                .six.wide.column
+                    +image_edit key='image_id' direct=true
+                    +html_edit key='description' direct=true

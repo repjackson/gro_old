@@ -1,0 +1,178 @@
+template(name='dashboard')
+    .ui.stackable.padded.grid
+        .three.column.row
+            .column
+                .ui.header current hourly wage #{current_hourly_wage}
+                .ui.header active reservations #{active_reservations}
+                .ui.icon.button.recheck_active_reservations
+                    i.refresh.icon
+                .ui.icon.button.refresh_current_hourly_wage
+                    i.refresh.icon
+                +todays_schedule
+                +product_stats
+            .column
+                +most_frequent_buyers
+                +most_lucrative_buyers
+                +bookmarked_users
+            .column
+                +top_selling_products
+                .ui.header 
+                    +i name='food' 
+                    |top selling food
+                .ui.header 
+                    +i name='tags' 
+                    |top selling tags
+                +todays_stats
+                +weekly_stats
+                +monthly_stats
+        .row
+            .sixteen.wide.column
+                .ui.header 
+                    +i name='transaction' 
+                    |your products
+                .ui.five.cards
+                    each my_products
+                        +product_card
+                
+template(name='product_card')                
+    .ui.card
+        .content
+            a(href="/shop/#{_id}/view")
+                img.ui.avatar.image(src="{{c.url picture width=100 height=100 gravity='face' crop='crop'}}")
+                .ui.small.inline.header
+                    | #{title}
+            .ui.small.inline.header #{reader_count}
+            .ui.small.inline.header #{points} likes
+            .ui.small.inline.header #{transactions_count} transactions count
+
+
+template(name='product_stats')
+    .ui.header 
+        +i name='line-chart' 
+        |stats
+    .ui.small.header #{currentUser.current_product_count} products
+    .ui.small.header #{currentUser.reservation_count} reservations
+        
+        
+template(name='bookmarked_users')
+    .ui.header 
+        +i name='star' 
+        |bookmarked users
+    //- .ui.small.header #{currentUser.current_product_count} products
+    //- .ui.small.header #{currentUser.reservation_count} reservations
+        
+        
+        
+template(name='most_frequent_buyers')
+    .ui.segment
+        .ui.header 
+            +i name='user-male' 
+            |most frequent buyers
+        each most_frequent_buyers
+            a(href="/user/#{username}")
+                .ui.small.header
+                    img.ui.avatar.image(src="{{c.url image_id width=100 height=100 gravity='face' crop='crop'}}")        
+                    | #{username}
+        
+        
+        
+        
+template(name='most_lucrative_buyers')
+    .ui.segment
+        .ui.header 
+            +i name='money' 
+            |most lucrative buyers
+        each most_lucrative_buyers
+            a(href="/user/#{username}")
+                .ui.small.header
+                    img.ui.avatar.image(src="{{c.url image_id width=100 height=100 gravity='face' crop='crop'}}")        
+                    | #{username}
+        
+        
+        
+template(name='top_selling_products')
+    .ui.segment
+        .ui.header
+            i.star.blue.icon
+            | top selling products
+        .ui.animated.list
+            each top_products
+                a.item(href="/shop/#{_id}/view")
+                    .ui.small.header
+                        img.ui.avatar.image(src="{{c.url image width=100 height=100 gravity='face' crop='crop'}}")        
+                        | #{title}
+        
+        
+        
+        
+template(name='todays_stats')
+    .ui.segment
+        .ui.header 
+            i.sun.blue.icon
+            |todays stats
+        .ui.small.header $#{currentUser.todays_earnings} earned
+        .ui.blue.icon.button.redraw_todays_stats 
+            i.refresh.blue.icon
+        each todays_reservations
+            .ui.header #{date} #{notes}
+            a(href="/shop/#{product_id}/view") product view
+        .ui.header available jobs
+        each negative_products
+            .ui.small.header #{title}
+
+
+
+template(name='weekly_stats')
+    .ui.segment
+        .ui.header 
+            i.list.blue.icon
+            |weekly stats
+        .ui.small.header $#{currentUser.weekly_earnings} earned
+        .ui.small.header #{currentUser.weekly_reservations} reservations
+        .ui.blue.icon.button.redraw_weekly_stats
+            i.refresh.blue.icon
+
+
+
+template(name='monthly_stats')
+    .ui.segment
+        .ui.header 
+            i.calendar.blue.icon
+            |monthly stats
+        .ui.small.header $#{todays_earnings} earned
+        .ui.blue.icon.button.redraw_monthly_stats
+            i.refresh.blue.icon
+        each todays_reservations
+            .ui.header #{date} #{notes}
+            a(href="/shop/#{product_id}/view") product view
+
+
+
+
+
+template(name='todays_schedule')
+    .ui.segment
+        .ui.header
+            +i name='calendar' 
+            |schedule for today
+        .ui.small.header tasks due today
+        .ui.small.header unread messages
+        .ui.small.header unread tickets
+        .ui.small.header events
+        //- each today_events
+        //-     .ui.header #{title} #{long_timestamp} #{_author_username}
+
+
+
+
+template(name='games')
+    .ui.stackable.padded.grid
+        .row
+            .sixteen.wide.column
+                .ui.header 
+                    i.dice.blue.icon
+                    |games
+        .row
+            .four.wide.column
+                .ui.segment
+                    a.ui.header(href="/game/picker") picker

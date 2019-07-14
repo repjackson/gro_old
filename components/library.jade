@@ -1,0 +1,21 @@
+template(name='library')
+    .ui.padded.stackable.grid.header-wrapper
+        .row
+            .sixteen.wide.center.aligned.column
+                a.ui.big.circular.button(href='/healthclub')
+                    i.left.chevron.grey.icon
+                    i.home.large.icon
+                h1.ui.massive.inline.header 
+                    +i name='badminton-racquet'
+                    |equipment
+        .row
+            .sixteen.wide.column
+                .ui.large.center.aligned.header ask staff to borrow
+                .ui.centered.three.cards
+                    each library_items
+                        +library_item
+template(name='library_item')
+    .ui.card
+        img(src="{{c.url image_id height=200 width=300 crop='lpad'}}")
+        .content
+            .header #{title}

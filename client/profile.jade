@@ -1,0 +1,335 @@
+template(name='user_layout')
+    +nav
+    with user_from_username_param
+        .ui.padded.stackable.grid.global_container
+            .ui.hidden.divider
+            .row
+                .four.wide.column
+                    if image_id
+                        img.ui.centered.circular.shadowed.image(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
+                        //- a.item(href="/user/#{user_from_username_param.username}/")
+                    .ui.center.aligned.basic.segment
+                        a(href="/user/#{user.username}")
+                            h1.ui.large.center.aligned.header
+                                | #{user.first_name}
+                                | #{user.last_name}
+                    .ui.center.aligned.small.grey.header
+                        | #{user.tagline}
+                    .ui.center.aligned.small.grey.header
+                        | @#{user.username}        
+                    if is_dev
+                        a.ui.icon.button.item(href="/user/#{user_from_username_param.username}/edit" title='settings')
+                            +i name='settings'
+                    else if is_current_user
+                        a.ui.icon.button.item(href="/user/#{user_from_username_param.username}/edit" title='settings')
+                            +i name='settings'
+                    .ui.icon.button.direct_message
+                        +i name='new-message'
+                        //- |direct message
+                    if is_current_user
+                        .ui.icon.button.logout(title='log out')
+                            +i name='exit-sign'
+                        a.ui.small.button.logout_other_clients(href="#")
+                            |logout other clients
+                    if is_admin
+                        .ui.segment
+                            .ui.grey.header 
+                                //- +i name='user shield'
+                                i.shield.icon
+                                |roles
+                            each roles
+                                .ui.basic.label #{this}
+                .twelve.wide.column.shadowed-box
+                    a.ui.icon.button(href="/user/#{username}" class="{{isActiveRoute 'user_about'}}" title='info')
+                        +i name='info'
+                    a.ui.icon.button(href="/user/#{username}/dashboard" class="{{isActiveRoute 'user_dashboard'}}" title='info')
+                        +i name='dashboard'
+                    a.ui.icon.button(href="/user/#{username}/social" class="{{isActiveRoute 'user_social'}}" title='social')
+                        +i name='collaboration'
+                    a.ui.icon.button(href="/user/#{username}/documents" class="{{isActiveRoute 'user_documents'}}" title='documents')
+                        +i name='documents'
+                    a.ui.icon.button(href="/user/#{username}/products" class="{{isActiveRoute 'user_products'}}" title='shop')
+                        +i name='shop'
+                    a.ui.icon.button(href="/user/#{username}/gallery" class="{{isActiveRoute 'user_gallery'}}" title='gallery')
+                        +i name='gallery'
+                    a.ui.icon.button(href="/user/#{username}/bookmarks" class="{{isActiveRoute 'user_bookmarks'}}" title='bookmarks')
+                        +i name='star'
+                    a.ui.icon.button(href="/user/#{username}/contact" class="{{isActiveRoute 'user_contact'}}" title='contact')
+                        +i name='phone'
+                    a.ui.icon.button(href="/user/#{username}/events" class="{{isActiveRoute 'user_events'}}" title='events')
+                        +i name='calendar'
+                    a.ui.icon.button(href="/user/#{username}/comparison" class="{{isActiveRoute 'user_comparison'}}" title='comparison')
+                        +i name='meeting'
+                    a.ui.icon.button(href="/user/#{username}/tags" class="{{isActiveRoute 'user_tags'}}" title='tags')
+                        +i name='tags'
+                    a.ui.icon.button(href="/user/#{username}/requests" class="{{isActiveRoute 'user_requests'}}" title='requests')
+                        +i name='request-service'
+                    a.ui.icon.button(href="/user/#{username}/votes" class="{{isActiveRoute 'user_votes'}}" title='votes')
+                        +i name='elections'
+                    a.ui.icon.button(href="/user/#{username}/karma" class="{{isActiveRoute 'user_karma'}}" title='karma')
+                         +i name='heart-with-pulse'
+                    a.ui.icon.button(href="/user/#{username}/payment" class="{{isActiveRoute 'user_payment'}}" title='payment options')
+                         +i name='online-payment-with-a-credit-card'
+                    a.ui.icon.button(href="/user/#{username}/transactions" class="{{isActiveRoute 'user_transactions'}}" title='money')
+                         +i name='money'
+                    a.ui.icon.button(href="/user/#{username}/notifications" class="{{isActiveRoute 'user_notifications'}}" title='money')
+                         +i name='appointment-reminders'
+                    +yield
+    //- +footer 
+
+
+template(name='user_products')
+    .ui.header 
+        +i name='shop'
+        |#{user_from_username_param.username}'s products
+        .ui.cards
+            each products
+                +user_product
+            
+            
+template(name='user_product')
+    .ui.link.card.goto_shop_item_page
+        img.ui.image(src="{{c.url image_id height=200 width=300 crop='lpad'}}")
+        .content
+            .header #{title}
+            .meta #{when}
+            
+        .content
+            .right.floated 
+                if for_sale
+                    span(title='for sale')
+                        i.grey.cart.icon
+                        $#{dollar_price}
+                if rentable
+                    div
+                    span(title='rentable')
+                        i.grey.clock.icon
+                        $#{hourly_rate}
+            +small_author_info
+            //- img.ui.avatar.image(src="{{c.url author.image_id height=200 width=200 crop='fit'}}")
+            //- |#{_author_username}
+        .extra.content
+            .right.floated 
+                |#{sales}
+                i.money.icon
+            i.eye.icon
+            |#{views}
+
+    
+    
+template(name='user_dashboard')
+    +dashboard
+            
+template(name='user_comparison')
+    .ui.header user comparison
+    .ui.header simulate conversation between you and them using site stats
+            
+template(name='user_transactions')
+    .ui.segment
+        .ui.header sent karma
+        each sent_karma
+            .ui.segment
+                .ui.small.inline.header #{_author_username}
+                |#{description}
+                each tags
+                    .ui.label #{this}
+                .ui.small.inline.header #{karma_amount}
+    +transactions
+            
+template(name='received_karma')
+    .ui.segment
+        .ui.header received karma
+        each received_karma
+            .ui.segment
+                .ui.small.inline.header #{_author_username}
+                |#{description}
+                each tags
+                    .ui.label #{this}
+                .ui.small.inline.header #{karma_amount}
+                
+            
+            
+
+template(name='user_notes')
+    if user_is_resident
+        if is_staff
+            .ui.segment
+                +textarea_edit key='staff_notes' title='staff notes' icon='note' direct=true
+
+            
+            
+template(name='user_section')
+    +user_delta
+    // +Template.dynamic template=user_section_template
+
+    
+
+template(name='user_log')
+    //- .ui.fluid.styled.accordion
+    .ui.segment
+        .ui.grey.inline.center.aligned.small.header 
+            //- +i name='overview-pages-4'
+            i.list.icon
+            |log
+        .smallscroll
+            .ui.list
+                each user_log_events
+                    .item
+                        .content
+                            .header #{body}
+                            .description #{when}
+
+
+template(name='user_people')
+    +user_following
+    +follow_user
+
+
+template(name='user_feed')
+    .ui.cloud.segment
+        .ui.grey.inline.header 
+            +i name='feed'
+            |feed
+        //- if current_user
+        //-     .ui.fluid.input
+        //-         input(type='text' placeholder='Share something...')
+    +user_wall
+                
+                
+                
+template(name='user_bookmarks')
+    .ui.header 
+        +i name='star'
+        |bookmarks
+    .ui.list
+        each bookmarks
+            .item
+                .content
+                    a.header(href="/m/#{model}/#{_id}/view") #{title} [#{model}]
+                    .description #{when}
+
+            
+            
+template(name='user_karma')
+    .ui.header 
+        +i name='heart-with-pulse'
+        | karma
+    .ui.circular.button buy karma
+    with user_from_username_param
+        |karma #{karma}
+    .ui.circular.button.send_new
+        |send karma
+    if sending_karma
+        .ui.icon.circular.button.cancel_sending
+            i.remove.icon
+        with send_karma_transaction
+            +textarea_edit key='description' direct=true
+            +array_edit key='tags' direct=true
+            +number_edit key='karma_amount' direct=true
+            .ui.green.circular.button.complete_sending
+                |complete
+
+
+            
+                
+template(name='user_unread')
+    .ui.cloud.segment
+        .ui.header 
+            i.new.icon
+            |unread messages
+                
+                
+
+template(name='user_tasks')
+    //- .ui.fluid.styled.accordion
+    .ui.segment
+        .ui.grey.inline.center.aligned.small.header 
+            //- +i name='tasks'
+            i.tasks.icon
+            |staff tasks
+        +goto_model slug='task'
+        .ui.icon.input
+            i.plus.icon
+            input.assign_task(type='text' placeholder='assign task...')
+        //- .ui.circular.button.view_complete(class=view_complete_class)
+        //-     |View Completed
+        // .ui.circular.button.view_incomplete(class=view_complete_class)
+        //     |View Incomplete
+        each assigned_tasks
+            .ui.smoothed.segment
+                .ui.header #{body}
+                +boolean_edit key='complete' label='Complete' direct=true true_icon='checkmark' false_icon='remove'
+                //- +voting
+                +author_info
+                +creation_info
+                if is_author
+                    +remove_button
+                    
+            
+            
+template(name='user_array_list')
+    .ui.list
+        each users
+            .item
+                +user_info
+            
+            
+            
+
+            
+template(name='user_array_element_toggle')
+    .ui.circular.button.toggle_element(class=user_array_element_toggle_class)
+        |#{value}
+
+template(name='user_string_toggle')
+    .ui.circular.button.toggle_element(class=user_string_element_toggle_class)
+        |#{value}
+        
+            
+            
+        
+template(name='user_following')    
+    .ui.cloud.segment
+        .ui.grey.header 
+            i.bell.icon
+            |following
+        +user_array_list user=user_from_username_param array='following_ids'
+          
+
+template(name='follow_user')    
+    .ui.cloud.segment
+        .ui.grey.inline.header
+            unless current_user
+                a.toggle_follow_user(href='#' title='Follow User')
+                    i.renew.icon
+            else
+                i.bell.icon
+            |followed by
+        +user_array_list user=user_from_username_param array='followed_by_ids'
+                
+
+template(name='user_wall')
+    .ui.fluid.styled.accordion
+        .active.title
+            .ui.grey.inline.center.aligned.small.header 
+                i.edit.icon
+                |wall
+        .active.content
+            if currentUser
+                .ui.fluid.icon.input
+                    i.plus.icon
+                    input.new_post(type='text' placeholder='Add post...')
+            .ui.comments
+                each wall_posts
+                    .comment
+                        //- .avatar
+                        .active.content
+                            a.author(href='#') #{author.first_name} #{author.last_name}
+                            .metadata
+                                span.date #{when}
+                            .text.large120 #{body}
+                            .actions
+                                i.remove.link.icon.remove_comment(title='Vote Down')
+                                i.thumbs.up.link.icon.vote_up_comment(title='Vote Up')
+                                |#{points}
+                                i.message.link.icon.mark_comment_read(title='Mark Read')        

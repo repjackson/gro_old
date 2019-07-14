@@ -1,0 +1,163 @@
+template(name='nav')
+    .ui.borderless.attached.big.menu.topnav
+        //- a.toggle_sidebar.icon.item.sidebar_on
+        //-     i.large.sidebar.icon
+        if is_loading
+            .icon.item
+                i.big.loading.grey.yin.yang.icon
+        else
+            a.icon.item.set_all(href='/m/all' class="{{isActivePath '/m/all'}}" title='dao')
+                +i name='yin-yang' classes='ui inline mini image'
+            a.item.set_model(href='/m/model' class="{{isActivePath '/m/model'}}")
+                +i name='home' classes='ui inline mini image'
+                //- i.sitemap.large.icon
+            //- a.item(href='/home' class="{{isActivePath '/home'}}")
+            //-     //- i.th.large.icon
+            //- each bookmarked_models
+            //-     a.item.set_bookmarked_model(href="/m/#{slug}" class="{{isActivePath '/m/#{slug}'}}")
+            //-         +i name=icon
+            //-         //- i.large.icon(class=icon)
+            //-             |#{title}
+
+            //- a.icon.item(href='/' class="{{isActivePath '/'}}")
+            //-     +i name='shop'
+            //-     //- i.cart.large.icon
+            //- a.icon.item(href='/users' class="{{isActivePath '/users'}}")
+            //-     +i name='conference-foreground-selected'
+            //-     //- i.users.icon
+            //- a.icon.item(href='/gallery' class="{{isActivePath '/gallery'}}")
+            //-     +i name='gallery'
+            //- a.icon.item(href='/groups' class="{{isActivePath '/groups'}}")
+            //-     +i name='groups'
+            //-     //- i.users.large.icon
+            //- if is_admin
+            //-     a.icon.item.set_shop(href='/m/shop' class="{{isActivePath '/m/shop'}}")
+            //-         +i name='shop'
+            //-         //- i.shop.icon
+            //-         //- .mobile.hidden &nbsp; market
+            //- a.icon.item(href='/events' class="{{isActivePath '/events'}}" title='events')
+            //-     +i name='calendar'
+                //- i.calendar.large.icon
+            //- a.icon.item(href='/documents' class="{{isActivePath '/documents'}}" title='documents')
+            //-     +i name='documents'
+            //- a.icon.item(href='/votes' class="{{isActivePath '/votes'}}" title='votes')
+            //-     +i name='elections'
+            //- a.icon.item(href='/qa' class="{{isActivePath '/qa'}}" title='qa')
+            //-     +i name='faq'
+            //- a.icon.item(href='/videos' class="{{isActivePath '/videos'}}" title='video')
+            //-     +i name='video'
+            
+            //- a.icon.item.set_meal(href='/m/meal' class="{{isActivePath '/m/meal'}}" title='food')
+            //-     +i name='food'
+            //- a.item.set_marketplace(href='/m/marketplace' class="{{isActivePath '/m/marketplace'}}")
+            //-     +i name='shop'
+        if currentUser
+            .right.menu
+                //- .item
+                //-     .ui.header(title='your karma') #{currentUser.karma}
+                unless logging_out
+                    //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications" class="{{isActiveRoute regex='notifications'}}")
+                    //-     i.large.alarm.icon
+                        //- .menu
+                        //-     if notifications
+                        //-         each notifications
+                        //-             .ui.button #{text}
+                        //-     else 
+                        //-         |no notifications
+                    if is_user
+                        //- a.icon.item(href="/user/#{currentUser.username}" class="{{isActiveRoute regex='profile'}}")
+                        //-     +i name='new-post'
+                        //-     //- i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
+                        //- a.icon.item(href="/chat" class="{{isActivePath '/chat'}}" title='chat')
+                        //-     +i name='chat'
+                            //- i.chat.large.icon
+                        //- a.item(href="/credit" class="{{isActivePath '/credit'}}" title="#{currentUser.credit} credit")
+                        //-      +i name='wallet'
+                        //-      |#{currentUser.credit}
+                        //- a.icon.item.new_item(href="#")
+                        //-     i.circular.plus.icon
+                        //- a.item(href="/cart" class="{{isActivePath '/cart'}}" title='cart')
+                        //-     |#{cart_amount}
+                    //- if is_admin
+                    //-     a.icon.item(href='/admin' class="{{isActivePath '/admin'}}")
+                    //-         +i name='user shield'
+                    //-         //- i.user.shield.icon
+                    a.icon.item(href="/user/#{currentUser.username}" class="{{isActiveRoute regex='user_chat'}}")
+                        //- if currentUser.image_id
+                        //-     img.ui.inline.circular.tiny.image(src="{{c.url currentUser.image_id width=100 height=100 gravity='face' crop='fill'}}")
+                        //- else
+                        +i name='user' classes='ui inline mini image'
+                        //- i.user.icon
+                        | #{currentUser.username}
+                if logging_out
+                    .item
+                        i.large.loading.circle.notch.icon
+                //- else
+                //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
+                //-         i.sign.out.large.icon
+        else
+            a.icon.item(href='/login' title='login') 
+                //- i.sign.in.large.icon
+                +i name='enter-2' classes='ui avatar image'
+
+
+
+template(name='footer')
+    .ui.fluid.basic.attached.segment.footer
+        .ui.container.stackable.grid
+            .eight.wide.column
+                //- with currentUser
+                    //- if is_dev
+                    //-     +textarea_edit key='notes' direct=true
+                    //- form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
+                    //-     input(type='hidden', name='cmd', value='_s-xclick')
+                    //-     input(type='hidden', name='hosted_button_id', value='AUVHGYNUW5LVE')
+                    //-     <input type="hidden" name="hosted_button_id" value="7SENHECABERS6" />
+                    //-     // input(type='image', src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif', border='0', name='submit')
+                    //-     //- <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                    //-     img(alt='', border='0', src='https://www.paypal.com/en_US/i/scr/pixel.gif', width='1', height='1')
+                    //-     button.ui.large.icon.button(type='submit')
+                    //-         //- i.pied.piper.alternate.large.icon
+                    //-         +i name='donate'
+                
+                if is_dev    
+                    with current_user
+                        +role_switcher
+            .eight.wide.column
+                //- unless currentUser
+                //-     a.ui.big.basic.button(href='/login')
+                //-         i.sign.in.icon
+                //-         |login
+                if is_eric
+                    with currentUser
+                        +role_switcher
+                        //- +tribe_switcher
+                else if is_dev
+                    with currentUser
+                        +role_switcher
+        //- if is_user
+        //-     .row
+        //-         .ui.center.aligned.inverted.header
+        //-             i.copyright.outline.icon
+        //-             |
+
+
+template(name='role_switcher')
+    .ui.segment
+        .ui.grey.inline.center.aligned.small.header 
+            //- +i name='anonymous-mask'
+            i.shield.icon(title='role switcher')
+            |#{username} role switcher
+        //- if is_eric
+        //-     +user_array_element_toggle key='roles' value='dev' user=currentUser
+        //- if current_user
+        //-     with current_user
+        //-         +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
+        //- else if currentUser
+        //-     with currentUser
+        +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
+        //- +user_array_element_toggle key='roles' value='admin' user=currentUser
+        //- +user_array_element_toggle key='roles' value='user' user=currentUser
+        //- +user_array_element_toggle key='roles' value='staff' user=currentUser
+        //- +user_array_element_toggle key='roles' value='resident' user=currentUser
+        //- +user_array_element_toggle key='roles' value='owner' user=currentUser
