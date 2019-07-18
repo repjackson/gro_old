@@ -25,20 +25,18 @@ Meteor.methods
         Docs.update delta._id,
             $set:facets:[]
         for field in fields.fetch()
-            unless field.field_type in ['textarea','image','youtube','html']
-                # unless field.key in ['slug','icon']
-                    if field.faceted is true
-                        Docs.update delta._id,
-                            $addToSet:
-                                facets: {
-                                    title:field.title
-                                    icon:field.icon
-                                    key:field.key
-                                    rank:field.rank
-                                    field_type:field.field_type
-                                    filters:[]
-                                    res:[]
-                                }
+            if field.faceted is true
+                Docs.update delta._id,
+                    $addToSet:
+                        facets: {
+                            title:field.title
+                            icon:field.icon
+                            key:field.key
+                            rank:field.rank
+                            field_type:field.field_type
+                            filters:[]
+                            res:[]
+                        }
         Meteor.call 'fum', delta._id
 
 
@@ -56,7 +54,7 @@ Meteor.methods
         if model.collection and model.collection is 'users'
             built_query.roles = $in:[delta.model_filter]
         else
-            unless delta.model_filter is 'all'
+            unless delta.model_filter is 'post'
                 built_query.model = delta.model_filter
 
         if delta.model_filter is 'model'
@@ -118,7 +116,7 @@ Meteor.methods
         # delta = Docs.findOne delta_id
 
     agg: (query, key, collection)->
-        limit=20
+        limit=42
         options = { explain:false }
         pipe =  [
             { $match: query }

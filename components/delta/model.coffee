@@ -49,9 +49,12 @@ if Meteor.isClient
     Template.model_doc_view.events
         'click .back_to_model': ->
             Session.set 'loading', true
-            Meteor.call 'set_facets', @model, ->
+            Meteor.call 'set_facets', 'post', ->
                 Session.set 'loading', false
-            Router.go "/m/#{@model}"
+            Router.go "/m/post"
+            # Meteor.call 'set_facets', @model, ->
+            #     Session.set 'loading', false
+            # Router.go "/m/#{@model}"
 
 
 if Meteor.isServer

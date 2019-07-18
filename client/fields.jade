@@ -84,7 +84,7 @@ template(name='i')
     //- img(src="https://img.icons8.com/ultraviolet/48/000000/#{name}.png" class=classes title=title)
 
 template(name='ismall')
-    img(src="https://img.icons8.com/color/24/000000/#{name}.png" class=classes title=title)
+    img(src="https://img.icons8.com/pastel-glyph/24/000000/#{name}.png" class=classes title=title)
     //- img(src="https://img.icons8.com/ultraviolet/24/000000/#{name}.png" class=classes title=title)
 
 template(name='iblue')
@@ -131,7 +131,7 @@ template(name='image_view')
         //-     |#{key}
         //- else
         //-     |#{this}
-        img.ui.centered.rounded.image.invert(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
+        img.ui.centered.rounded.large.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- img.ui.centered.rounded.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- a(href="{{c.url field_value gravity='face' crop='fit'}}")
         //-     |download
@@ -303,8 +303,9 @@ template(name='html_view')
         |!{field_value}
     //- +call_watson mode='html'
     if parent.watson
-        with parent
-            +watson_view
+        if is_dev
+            with parent
+                +watson_view
 
 
 template(name='document_edit')
@@ -724,7 +725,8 @@ template(name='array_view')
         div
         .ui.inline.small.header
             if icon
-                +i name=icon
+                //- +ismall name=icon
+                i.icon(class=icon)
             if title
                 |#{title}
             else if label
@@ -831,14 +833,14 @@ template(name='youtube_edit')
             |Youtube Id
         input.youtube_id(type='text' value=field_value placeholder=placeholder autocomplete="off")
     if field_value
-        iframe.invert(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
+        iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
 
 template(name='youtube_view')
     if field_value
         if icon
             +i name=icon
             //- i.icon(class=icon)
-        .ui.embed.invert(data-source="youtube" data-id=field_value)
+        .ui.embed(data-source="youtube" data-id=field_value)
 
         //- // iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
         //- iframe(src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')

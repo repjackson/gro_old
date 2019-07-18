@@ -2,13 +2,12 @@ template(name='delta')
     with current_model
         .ui.stackable.padded.grid
             .row
-                .eight.wide.right.aligned.column.scrolling
-                    +nav
-                    
-                    .ui.inline.header
-                        //- i.icon(class=icon)
-                        +i name=icon
-                        | #{title}
+                .six.wide.column.scrolling
+                    if is_admin
+                        .ui.inline.header
+                            //- i.icon(class=icon)
+                            +i name=icon
+                            | #{title}
                     unless is_loading
                         if currentUser
                             .ui.icon.large.basic.button.add_model_doc(title="Add #{title}")
@@ -16,9 +15,8 @@ template(name='delta')
                             //- +i name='plus'
                         //- if can_edit
                             //- +edit_circular.button
-                        if currentUser
-                            +user_list_toggle key='bookmark_ids' icon='bookmark' label='bookmark' color='red'
-            
+                        //- if currentUser
+                        //-     +user_list_toggle key='bookmark_ids' icon='bookmark' label='bookmark' color='red'
                         if is_dev
                             .ui.icon.large.basic.button.edit_model
                                 i.large.cog.icon
@@ -50,7 +48,7 @@ template(name='delta')
                     div
                     each sorted_facets
                         +facet
-                .eight.wide.column.scrolling
+                .ten.wide.column.scrolling
                     //- .ui.inline.header
                     //-     |sort by
                     //- .ui.button
@@ -125,11 +123,11 @@ template(name='delta_result')
                                 +user_list_toggle key='bookmark_ids' icon='bookmark' label='Bookmark' color='red'
                                 a.ui.basic.button.route_model(href="/m/#{slug}")
                                     i.sitemap.icon
-                                    |View Model
+                                    |view model
                                 if is_admin
                                     a.ui.basic.button.route_model(href="/model/edit/#{_id}")
                                         i.edit.icon
-                                        |Edit Model
+                                        |edit model
                             else
                                 if can_edit
                                     +remove_button
@@ -141,7 +139,7 @@ template(name='delta_result')
                             if _author_id
                                 +author_info
                             +creation_info
-                                
+                        +jsonView json=this_data
                         
                         
 

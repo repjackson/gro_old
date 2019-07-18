@@ -16,7 +16,10 @@ template(name='user_layout')
                     .ui.center.aligned.small.grey.header
                         | #{user.tagline}
                     .ui.center.aligned.small.grey.header
-                        | @#{user.username}        
+                        | @#{user.username}    
+                    .ui.small.header tags
+                    each tags
+                        .ui.basic.large.label #{this}    
                     if is_dev
                         a.ui.icon.button.item(href="/user/#{user_from_username_param.username}/edit" title='settings')
                             +i name='settings'
@@ -40,40 +43,8 @@ template(name='user_layout')
                             each roles
                                 .ui.basic.label #{this}
                 .twelve.wide.column.shadowed-box
-                    a.ui.icon.button(href="/user/#{username}" class="{{isActiveRoute 'user_about'}}" title='info')
-                        +i name='info'
-                    a.ui.icon.button(href="/user/#{username}/dashboard" class="{{isActiveRoute 'user_dashboard'}}" title='info')
-                        +i name='dashboard'
-                    a.ui.icon.button(href="/user/#{username}/social" class="{{isActiveRoute 'user_social'}}" title='social')
-                        +i name='collaboration'
-                    a.ui.icon.button(href="/user/#{username}/documents" class="{{isActiveRoute 'user_documents'}}" title='documents')
-                        +i name='documents'
-                    a.ui.icon.button(href="/user/#{username}/products" class="{{isActiveRoute 'user_products'}}" title='shop')
-                        +i name='shop'
-                    a.ui.icon.button(href="/user/#{username}/gallery" class="{{isActiveRoute 'user_gallery'}}" title='gallery')
-                        +i name='gallery'
-                    a.ui.icon.button(href="/user/#{username}/bookmarks" class="{{isActiveRoute 'user_bookmarks'}}" title='bookmarks')
-                        +i name='star'
-                    a.ui.icon.button(href="/user/#{username}/contact" class="{{isActiveRoute 'user_contact'}}" title='contact')
-                        +i name='phone'
-                    a.ui.icon.button(href="/user/#{username}/events" class="{{isActiveRoute 'user_events'}}" title='events')
-                        +i name='calendar'
-                    a.ui.icon.button(href="/user/#{username}/comparison" class="{{isActiveRoute 'user_comparison'}}" title='comparison')
-                        +i name='meeting'
-                    a.ui.icon.button(href="/user/#{username}/tags" class="{{isActiveRoute 'user_tags'}}" title='tags')
-                        +i name='tags'
-                    a.ui.icon.button(href="/user/#{username}/requests" class="{{isActiveRoute 'user_requests'}}" title='requests')
-                        +i name='request-service'
-                    a.ui.icon.button(href="/user/#{username}/votes" class="{{isActiveRoute 'user_votes'}}" title='votes')
-                        +i name='elections'
-                    a.ui.icon.button(href="/user/#{username}/karma" class="{{isActiveRoute 'user_karma'}}" title='karma')
-                         +i name='heart-with-pulse'
-                    a.ui.icon.button(href="/user/#{username}/payment" class="{{isActiveRoute 'user_payment'}}" title='payment options')
-                         +i name='online-payment-with-a-credit-card'
-                    a.ui.icon.button(href="/user/#{username}/transactions" class="{{isActiveRoute 'user_transactions'}}" title='money')
-                         +i name='money'
-                    a.ui.icon.button(href="/user/#{username}/notifications" class="{{isActiveRoute 'user_notifications'}}" title='money')
-                         +i name='appointment-reminders'
+                    //- a.ui.icon.button(href="/user/#{username}/notifications" class="{{isActiveRoute 'user_notifications'}}" title='money')
+                    //-      +i name='appointment-reminders'
                     +yield
     //- +footer 
 
@@ -240,32 +211,6 @@ template(name='user_unread')
                 
                 
 
-template(name='user_tasks')
-    //- .ui.fluid.styled.accordion
-    .ui.segment
-        .ui.grey.inline.center.aligned.small.header 
-            //- +i name='tasks'
-            i.tasks.icon
-            |staff tasks
-        +goto_model slug='task'
-        .ui.icon.input
-            i.plus.icon
-            input.assign_task(type='text' placeholder='assign task...')
-        //- .ui.circular.button.view_complete(class=view_complete_class)
-        //-     |View Completed
-        // .ui.circular.button.view_incomplete(class=view_complete_class)
-        //     |View Incomplete
-        each assigned_tasks
-            .ui.smoothed.segment
-                .ui.header #{body}
-                +boolean_edit key='complete' label='Complete' direct=true true_icon='checkmark' false_icon='remove'
-                //- +voting
-                +author_info
-                +creation_info
-                if is_author
-                    +remove_button
-                    
-            
             
 template(name='user_array_list')
     .ui.list
@@ -306,30 +251,3 @@ template(name='follow_user')
                 i.bell.icon
             |followed by
         +user_array_list user=user_from_username_param array='followed_by_ids'
-                
-
-template(name='user_wall')
-    .ui.fluid.styled.accordion
-        .active.title
-            .ui.grey.inline.center.aligned.small.header 
-                i.edit.icon
-                |wall
-        .active.content
-            if currentUser
-                .ui.fluid.icon.input
-                    i.plus.icon
-                    input.new_post(type='text' placeholder='Add post...')
-            .ui.comments
-                each wall_posts
-                    .comment
-                        //- .avatar
-                        .active.content
-                            a.author(href='#') #{author.first_name} #{author.last_name}
-                            .metadata
-                                span.date #{when}
-                            .text.large120 #{body}
-                            .actions
-                                i.remove.link.icon.remove_comment(title='Vote Down')
-                                i.thumbs.up.link.icon.vote_up_comment(title='Vote Up')
-                                |#{points}
-                                i.message.link.icon.mark_comment_read(title='Mark Read')        

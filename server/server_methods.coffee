@@ -9,17 +9,6 @@ Meteor.methods
         else
             Throw.new Meteor.Error 'err creating user'
 
-    parse_keys: ->
-        cursor = Docs.find
-            model:'key'
-        for key in cursor.fetch()
-            # new_building_number = parseInt key.building_number
-            new_unit_number = parseInt key.unit_number
-            Docs.update key._id,
-                $set:
-                    unit_number:new_unit_number
-
-
     change_username:  (user_id, new_username) ->
         user = Meteor.users.findOne user_id
         Accounts.setUsername(user._id, new_username)
@@ -154,7 +143,7 @@ Meteor.methods
                 }, { fields:{_id:1} })
         else
             cursor = Docs.find({
-                _keys:$exists:false
+                # _keys:$exists:false
             }, { fields:{_id:1} })
 
         found = cursor.count()
@@ -171,9 +160,14 @@ Meteor.methods
         keys = _.keys doc
 
         light_fields = _.reject( keys, (key)-> key.startsWith '_' )
+        sun_fields = _.reject( light_fields, (light_field)-> light_field.startsWith '*' )
+        star_fields = _.every( light_fields, (light_field)-> light_field.startsWith '*' )
+        console.log 'sun fields', sun_fields
+        console.log 'star fields', star_fields
+        console.log 'light fields', light_fields
 
         Docs.update doc._id,
-            $set:_keys:light_fields
+            $set:_keys:sun_fields
         console.log 'found key for', doc._id
 
     global_remove: (keyname)->
@@ -201,33 +195,35 @@ Meteor.methods
 
 
     rename: (old, newk)->
+        console.log 'renaming ', old, newk
 
         old_count = Docs.find({"#{old}":$exists:true}).count()
-
+        console.log 'found old count', old_count
         new_count = Docs.find({"#{newk}":$exists:true}).count()
+        console.log 'found new count', new_count
 
 
         result = Docs.update({"#{old}":$exists:true}, {$rename:"#{old}":"#{newk}"}, {multi:true})
         result2 = Docs.update({"#{old}":$exists:true}, {$rename:"_#{old}":"_#{newk}"}, {multi:true})
-
+        console.log 'result renaming light fields', result
+        console.log 'result renaming dark fields', result2
         # > Docs.update({doc_sentiment_score:{$exists:true}},{$rename:{doc_sentiment_score:"sentiment_score"}},{multi:true})
-
-
         cursor = Docs.find({newk:$exists:true}, { fields:_id:1 })
 
         for doc in cursor.fetch()
+            console.log 'running key for ', doc._id
             Meteor.call 'key', doc._id
-
-
-
-
-
+        return "finished renaming #{old} to #{newk}"
 
 
     detect_fields: (doc_id)->
         doc = Docs.findOne doc_id
         keys = _.keys doc
         light_fields = _.reject( keys, (key)-> key.startsWith '_' )
+        sun_fields = _.reject( light_fields, (light_field)-> light_field.startsWith '*' )
+        star_fields = _.every( light_fields, (light_field)-> light_field.startsWith '*' )
+        console.log 'sun fields', sun_fields
+        console.log 'star fields', star_fields
 
         Docs.update doc._id,
             $set:_keys:light_fields

@@ -20,9 +20,9 @@ if Meteor.isClient
             Meteor.call 'set_facets', 'model', ->
                 Session.set 'loading', false
 
-        'click .set_all': ->
+        'click .set_post': ->
             Session.set 'loading', true
-            Meteor.call 'set_facets', 'all', ->
+            Meteor.call 'set_facets', 'post', ->
                 Session.set 'loading', false
 
         'click .set_bookmarked_model': ->
@@ -103,6 +103,14 @@ if Meteor.isClient
 
     Template.nav.events
 
+
+    Template.footer.events
+        'click .submit_rename': ->
+            old_key = $('.old_key').val()
+            # new_key = $('.new_key').val()
+            Meteor.call 'rename', old_key, "*#{old_key}", (err,res)->
+                unless err
+                    alert res
 
 
 if Meteor.isServer

@@ -141,6 +141,12 @@ Meteor.methods
                         watson_keywords: lowered_keywords
                         doc_sentiment_score: response.sentiment.document.score
                         doc_sentiment_label: response.sentiment.document.label
+                Docs.update { _id: doc_id },
+                    $addToSet:
+                        tags:$each:lowered_concepts
+                Docs.update { _id: doc_id },
+                    $addToSet:
+                        tags:$each:lowered_keywords
         )
         # Meteor.call 'call_personality', doc_id, ->
         # Meteor.call 'call_tone', doc_id, key, mode, ->

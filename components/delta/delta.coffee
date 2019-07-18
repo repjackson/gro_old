@@ -207,6 +207,16 @@ if Meteor.isClient
         @autorun => Meteor.subscribe 'user_from_id', @data._id
 
     Template.delta_result.helpers
+        this_data: ->
+            # console.log @
+            res = {}
+            for key in @_keys
+                res[key] = @["#{key}"]
+                # res[key] = @key
+            console.log 'res', res
+            res
+            # Template.currentData()
+
         template_exists: ->
             current_model = Router.current().params.model_slug
             if Template["#{current_model}_card_template"]
