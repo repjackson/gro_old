@@ -2,12 +2,12 @@ template(name='delta')
     with current_model
         .ui.stackable.padded.grid
             .row
-                .six.wide.column.scrolling
-                    if is_admin
-                        .ui.inline.header
-                            //- i.icon(class=icon)
-                            +i name=icon
-                            | #{title}
+                .eight.wide.right.aligned.column
+                    //- if is_admin
+                    .ui.inline.header
+                        //- i.icon(class=icon)
+                        +i name=icon
+                        | #{title}
                     unless is_loading
                         if currentUser
                             .ui.icon.large.basic.button.add_model_doc(title="Add #{title}")
@@ -48,7 +48,7 @@ template(name='delta')
                     div
                     each sorted_facets
                         +facet
-                .ten.wide.column.scrolling
+                .eight.wide.column
                     //- .ui.inline.header
                     //-     |sort by
                     //- .ui.button

@@ -65,10 +65,13 @@ if Meteor.isServer
 
 
 Docs.helpers
+    id: ->
+        console.log @
     author: ->
         console.log @
         Meteor.users.findOne @_author_id
     when: -> moment(@_timestamp).fromNow()
+
     upvoters: ->
         if @upvoter_ids
             upvoters = []
@@ -76,6 +79,7 @@ Docs.helpers
                 upvoter = Meteor.users.findOne upvoter_id
                 upvoters.push upvoter
             upvoters
+
     downvoters: ->
         if @downvoter_ids
             downvoters = []

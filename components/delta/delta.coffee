@@ -51,6 +51,7 @@ if Meteor.isClient
         'click .reset': ->
             model_slug =  Router.current().params.model_slug
             Session.set 'loading', true
+            console.log 'client delta setting facets', model_slug
             Meteor.call 'set_facets', model_slug, ->
                 Session.set 'loading', false
 
@@ -213,7 +214,7 @@ if Meteor.isClient
             for key in @_keys
                 res[key] = @["#{key}"]
                 # res[key] = @key
-            console.log 'res', res
+            # console.log 'res', res
             res
             # Template.currentData()
 
@@ -272,6 +273,7 @@ if Meteor.isServer
         match.model = 'model'
         match.slug = model_slug
 
+        console.log 'finding model', model_slug
         Docs.find match
 
 

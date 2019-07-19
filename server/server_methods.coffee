@@ -14,6 +14,36 @@ Meteor.methods
         Accounts.setUsername(user._id, new_username)
         return "Updated Username to #{new_username}."
 
+    convert: ->
+        # found = Docs.find model:'model'
+        # console.log found.fetch()
+        # for model in found.fetch()
+        #     if model._id
+        oids = Docs.find({
+            _id:$type:"objectId"
+            # model:'model',
+            },{limit:10})
+        # console.log 'oids count', oids.count()
+        for oid in oids.fetch()[..5]
+            console.log oid._id._str
+            # new_id = oid._id.toHexString()
+            Docs.update oid._id,
+                $unset:
+                    _id:1
+                $set:
+                    id:oid._id._str
+                    updated2:true
+            console.log Docs.findOne id:oid._id._str
+        # db.addressBook.find( { "zipCode" : { $type : "string" } } );
+
+        # found = Docs.findOne "_id._str":"5d2ce3ecee20fc35f6d9402d"
+        # found = Docs.findOne "_id":ObjectID("5d2ce3ecee20fc35f6d93de2")
+        # console.log found
+
+        # db.posts.find().forEach(function(doc){
+        #     db.accounts.update({_id: doc._id}, {$set: {'_id': doc._id.str }}, false, true);
+        # });
+
 
     add_email: (user_id, new_email) ->
         Accounts.addEmail(user_id, new_email);

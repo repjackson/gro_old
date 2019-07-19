@@ -5,11 +5,9 @@ template(name='nav')
         if is_loading
             .icon.item
                 i.big.loading.grey.yin.yang.icon
-        else
-            //- a.icon.item.set_post(href='/m/all' class="{{isActivePath '/m/all'}}" title='dao')
-            //-     +i name='yin-yang' classes='ui inline mini image'
-            a.item.set_post(href='/m/post' class="{{isActivePath '/m/post'}}")
-                i.home.icon
+        else 
+            a.icon.item.set_post(href='/home' class="{{isActivePath '/home'}}" title='home')
+                +i name='yin-yang' classes='ui inline mini image'
         if currentUser
             .right.menu
                 unless logging_out

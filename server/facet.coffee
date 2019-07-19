@@ -1,16 +1,18 @@
 Meteor.methods
     set_facets: (model_slug)->
+        console.log 'setting facets', model_slug
         delta = Docs.findOne
             model:'delta'
             _author_id:Meteor.userId()
         model = Docs.findOne
             model:'model'
             slug:model_slug
+        console.log 'model', model
         fields =
             Docs.find
                 model:'field'
                 parent_id:model._id
-
+        console.log 'fields', fields.fetch()
         Docs.update delta._id,
             $set:model_filter:model_slug
 
