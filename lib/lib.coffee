@@ -63,8 +63,6 @@ if Meteor.isServer
 
 
 Docs.helpers
-    id: ->
-        console.log @
     author: ->
         console.log @
         Meteor.users.findOne @_author_id
@@ -107,21 +105,6 @@ Meteor.methods
 
         Meteor.call 'fum', delta_id, (err,res)->
 
-    add_alpha_facet_filter: (alpha_id, key, filter)->
-        if key is '_keys'
-            new_facet_ob = {
-                key:filter
-                filters:[]
-                res:[]
-            }
-            Docs.update { _id:alpha_id },
-                $addToSet: facets: new_facet_ob
-        Docs.update { _id:alpha_id, "facets.key":key},
-            $addToSet: "facets.$.filters": filter
-
-        Meteor.call 'fa', alpha_id, (err,res)->
-
-
     remove_facet_filter: (delta_id, key, filter)->
         if key is '_keys'
             Docs.update { _id:delta_id },
@@ -131,57 +114,19 @@ Meteor.methods
         Meteor.call 'fum', delta_id, (err,res)->
 
 
-    remove_alpha_facet_filter: (alpha_id, key, filter)->
-        if key is '_keys'
-            Docs.update { _id:alpha_id },
-                $pull:facets: {key:filter}
-        Docs.update { _id:alpha_id, "facets.key":key},
-            $pull: "facets.$.filters": filter
-        Meteor.call 'fa', alpha_id, (err,res)->
 
-
-if Meteor.isClient
-    Template.docs.onCreated ->
-        @autorun -> Meteor.subscribe('docs', selected_tags.array())
-
-    Template.docs.helpers
-        docs: ->
-            Docs.find { },
-                sort:
-                    tag_count: 1
-                limit: 1
-
-        tag_class: -> if @valueOf() in selected_tags.array() then 'primary' else 'basic'
-
-        selected_tags: -> selected_tags.array()
-
-
-    Template.view.helpers
-        tag_class: -> if @valueOf() in selected_tags.array() then 'primary' else 'basic'
-        when: -> moment(@_timestamp).fromNow()
-
-    Template.view.events
-        'click .tag': -> if @valueOf() in selected_tags.array() then selected_tags.remove(@valueOf()) else selected_tags.push(@valueOf())
-
-        'click .edit': -> Router.go("/edit/#{@_id}")
-
-    Template.docs.events
-        'click #add': ->
-            Meteor.call 'add', (err,id)->
-                Router.go "/edit/#{id}"
-
-        'keyup #quick_add': (e,t)->
-            e.preventDefault
-            tag = $('#quick_add').val().toLowerCase()
-            if e.which is 13
-                if tag.length > 0
-                    split_tags = tag.match(/\S+/g)
-                    $('#quick_add').val('')
-                    Meteor.call 'add', split_tags
-                    selected_tags.clear()
-                    for tag in split_tags
-                        selected_tags.push tag
-
+        # 'keyup #quick_add': (e,t)->
+        #     e.preventDefault
+        #     tag = $('#quick_add').val().toLowerCase()
+        #     if e.which is 13
+        #         if tag.length > 0
+        #             split_tags = tag.match(/\S+/g)
+        #             $('#quick_add').val('')
+        #             Meteor.call 'add', split_tags
+        #             selected_tags.clear()
+        #             for tag in split_tags
+        #                 selected_tags.push tag
+        #
 
 
 if Meteor.isServer
@@ -190,20 +135,6 @@ if Meteor.isServer
         update: (userId, doc) -> userId
         # update: (userId, doc) -> doc._author_id is userId or 'admin' in Meteor.user().roles
         remove: (userId, doc) -> doc._author_id is userId or 'admin' in Meteor.user().roles
-
-    Meteor.publish 'docs', (selected_tags, filter)->
-        # user = Meteor.users.findOne @userId
-        # console.log selected_tags
-        # console.log filter
-        self = @
-        match = {}
-        # if filter is 'shop'
-        #     match.active = true
-        if selected_tags.length > 0 then match.tags = $all: selected_tags
-        if filter then match.model = filter
-
-        Docs.find match, sort:_timestamp:-1
-
 
     Meteor.publish 'doc', (id)->
         doc = Docs.findOne id

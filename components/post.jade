@@ -50,6 +50,7 @@ template(name='doc_match')
             .ui.basic.segment {{nl2br body}}
             each tags
                 .ui.small.label(class=matching_tag_class) #{this}
+            +author_info
             
             
             
@@ -72,6 +73,8 @@ template(name='post_edit')
                     +array_edit key='tags' icon='tags' direct=true
                     +image_edit key='image_id' direct=true
                     +array_edit key='Person' label='person' icon='groups' direct=true
+                    +array_edit key='Company' label='companies' icon='business' direct=true
+                    +array_edit key='Quantity' label='quantities' icon='business' direct=true
                     +array_edit key='Location' label='location' icon='marker' direct=true
 
 

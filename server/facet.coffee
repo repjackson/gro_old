@@ -70,6 +70,15 @@ Meteor.methods
                 res:[]
             }
             {
+                title:'quantities'
+                icon:'user-male'
+                key:'Quantity'
+                rank:36
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
                 title:'when'
                 icon:'clock'
                 key:'_timestamp_tags'

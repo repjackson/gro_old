@@ -5,7 +5,7 @@ template(name='nav')
     if is_loading
         i.big.loading.grey.yin.yang.icon
     else 
-        a.ui.icon.button(href='/' title='home')
+        a.ui.icon.button.reset(href='/' title='home')
             +i name='yin-yang' classes='ui inline mini image'
     if currentUser
         unless logging_out

@@ -96,25 +96,6 @@ if Meteor.isClient
 
 
 
-    Template.follow.helpers
-        followers: ->
-            Meteor.users.find
-                _id: $in: @follower_ids
-
-        following: -> @follower_ids and Meteor.userId() in @follower_ids
-
-
-    Template.follow.events
-        'click .follow': ->
-            Docs.update @_id,
-                $addToSet:follower_ids:Meteor.userId()
-
-        'click .unfollow': ->
-            Docs.update @_id,
-                $pull:follower_ids:Meteor.userId()
-
-
-
 
     Template.user_field.helpers
         key_value: ->
@@ -126,14 +107,6 @@ if Meteor.isClient
             value = t.$('.user_field').val()
             Meteor.users.update Router.current().params.doc_id,
                 $set:"#{@key}":value
-
-
-    Template.goto_model.events
-        'click .goto_model': ->
-            Session.set 'loading', true
-            Meteor.call 'set_facets', @slug, ->
-                Session.set 'loading', false
-
 
 
     Template.user_list_toggle.onCreated ->
@@ -165,37 +138,6 @@ if Meteor.isClient
         list_users: ->
             parent = Template.parentData()
             Meteor.users.find _id:$in:parent["#{@key}"]
-
-
-
-
-    Template.lease_expiration_check.helpers
-        lease_expiring: ->
-            if @expiration_date
-                # console.log @expiration_date
-                today = moment(Date.now())
-                expiration_moment = moment(@expiration_date)
-                # diff = today-@expiration_date
-                # console.log diff
-                # console.log moment(@expiration_date).subtract(30, 'd').calendar()
-                # console.log moment(@expiration_date).fromNow()
-                # console.log moment(@expiration_date).calendar()
-                expiration_moment.from(today)
-                # date1_ms = @expiration_date.getTime()
-                # date2_ms = today.getTime()
-                #
-                # # // Calculate the difference in milliseconds
-                # difference_ms = Math.abs(date1_ms - date2_ms)
-                #
-                # # // Convert back to days and return
-                # console.log Math.round(difference_ms/ONE_DAY)
-
-
-                # minute_difference = diff/1000/60
-                # if minute_difference>60
-                    # Meteor.users.update(member._id,{$set:healthclub_checkedin:false})
-
-
 
 
 
@@ -302,14 +244,6 @@ if Meteor.isClient
     #     @checking_in = new ReactiveVar
 
 
-    Template.email_validation_check.events
-        'click .send_verification': ->
-            if confirm 'send verification email?'
-                Meteor.call 'verify_email', @_id, ->
-                    alert 'verification email sent'
-
-
-
     Template.add_button.events
         'click .add': ->
             new_id = Docs.insert
@@ -330,11 +264,6 @@ if Meteor.isClient
                         Docs.remove @_id
                 , 1000
 
-
-    Template.add_model_button.events
-        'click .add': ->
-            new_id = Docs.insert model: @model
-            Router.go "/edit/#{new_id}"
 
     Template.view_user_button.events
         'click .view_user': ->

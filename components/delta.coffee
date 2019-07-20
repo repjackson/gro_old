@@ -49,10 +49,8 @@ if Meteor.isClient
             console.log delta
 
         'click .reset': ->
-            model_slug =  Router.current().params.model_slug
             Session.set 'loading', true
-            console.log 'client delta setting facets', model_slug
-            Meteor.call 'set_facets', model_slug, ->
+            Meteor.call 'set_facets', 'post', ->
                 Session.set 'loading', false
 
         'click .delete_delta': (e,t)->

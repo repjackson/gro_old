@@ -25,6 +25,12 @@ if Meteor.isClient
             Meteor.call 'set_facets', 'post', ->
                 Session.set 'loading', false
 
+        'click .reset': ->
+            Session.set 'loading', true
+            Meteor.call 'set_facets', 'post', ->
+                Session.set 'loading', false
+
+
         'click .set_tribe': ->
             Session.set 'loading', true
             Meteor.call 'set_facets', 'tribe', ->
