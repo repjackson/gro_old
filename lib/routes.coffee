@@ -19,9 +19,7 @@ Router.onBeforeAction(force_loggedin, {
 Router.route '/chat', -> @render 'view_chats'
 Router.route '/inbox', -> @render 'inbox'
 Router.route '/register', -> @render 'register'
-Router.route '/cart', -> @render 'cart'
 Router.route '/admin', -> @render 'admin'
-Router.route '/dashboard', -> @render 'dashboard'
 
 Router.route '/shop/:product_id/daily_calendar/:month/:day/:year/', -> @render 'product_day'
 
@@ -96,28 +94,32 @@ Router.route "/group/:doc_id/edit", (->
     ), name:'group_edit'
 
 
+Router.route '/posts', (->
+    @layout 'layout'
+    @render 'posts'
+    ), name:'posts'
+Router.route "/post/:doc_id", (->
+    @render 'post_page'
+    ), name:'post_page'
+Router.route "/post/:doc_id/edit", (->
+    @render 'post_edit'
+    ), name:'post_edit'
+
+
 Router.route '/login', -> @render 'login'
 
-Router.route '/', -> @redirect '/m/post'
+# Router.route '/', -> @redirect '/'
 # Router.route '/', -> @redirect "/user/#{Meteor.user().username}"
 
-# Router.route '/', (->
-#     @layout 'layout'
-#     @render 'shop'
-#     ), name:'front'
+Router.route '/', (->
+    @layout 'layout'
+    @render 'delta'
+    ), name:'home'
 
 Router.route '/user/:username', (->
     @layout 'user_layout'
     @render 'user_about'
     ), name:'user_about'
-Router.route '/user/:username/payment', (->
-    @layout 'user_layout'
-    @render 'user_payment'
-    ), name:'user_payment'
-Router.route '/user/:username/votes', (->
-    @layout 'user_layout'
-    @render 'user_votes'
-    ), name:'user_votes'
 Router.route '/user/:username/dashboard', (->
     @layout 'user_layout'
     @render 'user_dashboard'

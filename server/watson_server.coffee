@@ -97,16 +97,16 @@ Meteor.methods
         parameters =
             features:
                 entities:
-                    emotion: true
-                    sentiment: true
+                    emotion: false
+                    sentiment: false
                     # limit: 2
                 keywords:
-                    emotion: true
-                    sentiment: true
+                    emotion: false
+                    sentiment: false
                     # limit: 2
                 concepts: {}
-                categories: {}
-                emotion: {}
+                # categories: {}
+                # emotion: {}
                 # metadata: {}
                 # relations: {}
                 # semantic_roles: {}

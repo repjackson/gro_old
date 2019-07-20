@@ -8,13 +8,20 @@ Meteor.methods
             model:'model'
             slug:model_slug
         console.log 'model', model
-        fields =
-            Docs.find
-                model:'field'
-                parent_id:model._id
-        console.log 'fields', fields.fetch()
+        # fields =
+        #     Docs.find
+        #         model:'field'
+        #         parent_id:model._id
+        # fields = [
+        #     'tags'
+        #     'Person'
+        #     'Location'
+        # ]
+        # console.log 'fields', fields.fetch()
+        # Docs.update delta._id,
+        #     $set:model_filter:model_slug
         Docs.update delta._id,
-            $set:model_filter:model_slug
+            $set:model_filter:'post'
 
         # Docs.update delta._id,
         #     $set:facets:[
@@ -24,60 +31,110 @@ Meteor.methods
         #             res:[]
         #         }
         #     ]
+
+        facets = [
+            {
+                title:'tags'
+                icon:'tags'
+                key:'tags'
+                rank:10
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'location'
+                icon:'marker'
+                key:'Location'
+                rank:20
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'person'
+                icon:'user-male'
+                key:'Person'
+                rank:33
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'sentiment'
+                icon:'user-male'
+                key:'doc_sentiment_label'
+                rank:34
+                field_type:'text'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'when'
+                icon:'clock'
+                key:'_timestamp_tags'
+                rank:40
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+
+        ]
+
         Docs.update delta._id,
-            $set:facets:[]
-        for field in fields.fetch()
-            if field.faceted is true
-                Docs.update delta._id,
-                    $addToSet:
-                        facets: {
-                            title:field.title
-                            icon:field.icon
-                            key:field.key
-                            rank:field.rank
-                            field_type:field.field_type
-                            filters:[]
-                            res:[]
-                        }
+            $set:facets:facets
+        # for field in fields.fetch()
+        #     if field.faceted is true
+        #         Docs.update delta._id,
+        #             $addToSet:
+        #                 facets: {
+        #                     title:field.title
+        #                     icon:field.icon
+        #                     key:field.key
+        #                     rank:field.rank
+        #                     field_type:field.field_type
+        #                     filters:[]
+        #                     res:[]
+        #                 }
         Meteor.call 'fum', delta._id
 
 
     fum: (delta_id)->
         delta = Docs.findOne delta_id
-        model = Docs.findOne
-            model:'model'
-            slug:delta.model_filter
-        built_query = {}
+        # model = Docs.findOne
+        #     model:'model'
+        #     slug:delta.model_filter
+        built_query = {model:'post'}
 
-        fields =
-            Docs.find
-                model:'field'
-                parent_id:model._id
-        if model.collection and model.collection is 'users'
-            built_query.roles = $in:[delta.model_filter]
-        else
-            unless delta.model_filter is 'post'
-                built_query.model = delta.model_filter
+        # fields =
+        #     Docs.find
+        #         model:'field'
+        #         parent_id:model._id
+        # if model.collection and model.collection is 'users'
+        #     built_query.roles = $in:[delta.model_filter]
+        # else
+        #     unless delta.model_filter is 'post'
+        #         built_query.model = delta.model_filter
 
-        if delta.model_filter is 'model'
-            unless 'dev' in Meteor.user().roles
-                built_query.view_roles = $in:Meteor.user().roles
+        # if delta.model_filter is 'model'
+        #     unless 'dev' in Meteor.user().roles
+        #         built_query.view_roles = $in:Meteor.user().roles
 
         for facet in delta.facets
             if facet.filters.length > 0
                 built_query["#{facet.key}"] = $all: facet.filters
 
-        if model.collection and model.collection is 'users'
-            total = Meteor.users.find(built_query).count()
-        else
-            total = Docs.find(built_query).count()
+        # if model.collection and model.collection is 'users'
+        #     total = Meteor.users.find(built_query).count()
+        # else
+        total = Docs.find(built_query).count()
 
         # response
         for facet in delta.facets
             values = []
             local_return = []
 
-            agg_res = Meteor.call 'agg', built_query, facet.key, model.collection
+            agg_res = Meteor.call 'agg', built_query, facet.key
             # agg_res = Meteor.call 'agg', built_query, facet.key
 
             if agg_res
@@ -94,12 +151,7 @@ Meteor.methods
         # results_cursor =
         #     Docs.find( built_query, modifier )
 
-        if model and model.collection and model.collection is 'users'
-            results_cursor = Meteor.users.find(built_query, modifier)
-            # else
-            #     results_cursor = global["#{model.collection}"].find(built_query, modifier)
-        else
-            results_cursor = Docs.find built_query, modifier
+        results_cursor = Docs.find built_query, modifier
 
 
         # if total is 1
@@ -117,7 +169,7 @@ Meteor.methods
         return true
         # delta = Docs.findOne delta_id
 
-    agg: (query, key, collection)->
+    agg: (query, key)->
         limit=42
         options = { explain:false }
         pipe =  [
@@ -130,10 +182,7 @@ Meteor.methods
             { $project: _id: 0, name: '$_id', count: 1 }
         ]
         if pipe
-            if collection and collection is 'users'
-                agg = Meteor.users.rawCollection().aggregate(pipe,options)
-            else
-                agg = global['Docs'].rawCollection().aggregate(pipe,options)
+            agg = global['Docs'].rawCollection().aggregate(pipe,options)
             # else
             res = {}
             if agg

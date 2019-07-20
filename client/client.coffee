@@ -45,35 +45,6 @@ Template.registerHelper 'current_day', () -> moment(Date.now()).format("DD")
 # Template.registerHelper 'parent_template', () -> Template.parentData()
     # Session.get 'displaying_profile'
 
-# Template.registerHelper 'checking_in_doc', () ->
-#     Docs.findOne
-#         model:'healthclub_session'
-#         current:true
-#      # Session.get('session_document')
-
-# Template.registerHelper 'current_session_doc', () ->
-#         Docs.findOne
-#             model:'healthclub_session'
-#             current:true
-
-
-
-# Template.registerHelper 'checkin_guest_docs', () ->
-#     Docs.findOne Router.current().params.doc_id
-#     session_document = Docs.findOne Router.current().params.doc_id
-#     # console.log session_document.guest_ids
-#     Docs.find
-#         _id:$in:session_document.guest_ids
-
-
-Template.registerHelper 'referenced_product', () ->
-    Docs.findOne
-        _id:@product_id
-
-
-Template.registerHelper 'available_servings', () ->
-
-
 Template.registerHelper 'author', () -> Meteor.users.findOne @_author_id
 
 Template.registerHelper 'is_text', () ->
@@ -83,28 +54,6 @@ Template.registerHelper 'is_text', () ->
 Template.registerHelper 'template_parent', () ->
     # console.log Template.parentData()
     Template.parentData()
-
-Template.registerHelper 'fields', () ->
-    model = Docs.findOne
-        model:'model'
-        slug:Router.current().params.model_slug
-    if model
-        Docs.find {
-            model:'field'
-            parent_id:model._id
-            view_roles:$in:Meteor.user().roles
-        }, sort:rank:1
-
-Template.registerHelper 'edit_fields', () ->
-    model = Docs.findOne
-        model:'model'
-        slug:Router.current().params.model_slug
-    if model
-        Docs.find {
-            model:'field'
-            parent_id:model._id
-            # edit_roles:$in:Meteor.user().roles
-        }, sort:rank:1
 
 Template.registerHelper 'current_user', (input) ->
     Meteor.user() and Meteor.user().username is Router.current().params.username
@@ -147,7 +96,7 @@ Template.registerHelper 'is_user', () ->
 
 Template.registerHelper 'user_is_user', () -> if @roles and 'user' in @roles then true else false
 
-Template.registerHelper 'is_eric', () -> if Meteor.userId() and 'sxbqfr7tcn6MN3xtR' is Meteor.userId() then true else false
+Template.registerHelper 'is_eric', () -> if Meteor.userId() and 'exYMs7xwuJ9QZJZ33' is Meteor.userId() then true else false
 
 Template.registerHelper 'current_user', () ->  Meteor.users.findOne username:Router.current().params.username
 Template.registerHelper 'is_current_user', () ->  Meteor.user().username is Router.current().params.username
@@ -160,8 +109,6 @@ Template.registerHelper 'is_model', -> @model is 'model'
 #     'click .toggle_sidebar': -> $('.ui.sidebar').sidebar('toggle')
 
 Template.registerHelper 'is_editing', () -> Session.equals 'editing_id', @_id
-
-
 Template.registerHelper 'can_edit', () -> Meteor.userId() is @_author_id or 'admin' in Meteor.user().roles
 
 Template.registerHelper 'publish_when', () -> moment(@publish_date).fromNow()
@@ -183,8 +130,6 @@ Template.registerHelper 'field_value', () ->
     parent = Template.parentData()
     parent5 = Template.parentData(5)
     parent6 = Template.parentData(6)
-
-
     if @direct
         parent = Template.parentData()
     else if parent5._id
@@ -195,9 +140,7 @@ Template.registerHelper 'field_value', () ->
         parent["#{@key}"]
 
 
-Template.registerHelper 'is_marketplace', () -> @model is 'marketplace'
 Template.registerHelper 'is_post', () -> @model is 'post'
-Template.registerHelper 'is_meal', () -> @model is 'meal'
 
 Template.registerHelper 'in_dev', () -> Meteor.isDevelopment
 

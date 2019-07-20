@@ -261,7 +261,10 @@ template(name='textarea_edit')
                 else
                     |#{this}
             textarea.edit_textarea(rows='5') #{field_value}
-        //- +call_watson mode='text' key=key
+        +call_watson mode='text' key=key
+        if watson
+            +watson_view
+
 
 
 template(name='html_edit')

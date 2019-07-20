@@ -1,0 +1,80 @@
+template(name='post_item')
+    .ui.link.card.post_card
+        .image
+            img(src="{{c.url image_id height=300 crop='lpad'}}")
+        .content
+            .header #{title}
+            |!{description}
+        .content
+            i.small.posts.icon
+            each date_tags
+                .ui.small.basic.label #{this}
+        .content
+            |#{attending_usernames.length} members
+            each members
+                .ui.basic.label #{this}
+
+template(name='post_page')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .four.wide.column
+                    if can_edit
+                        a.ui.icon.button(href="/post/#{_id}/edit" title='edit')
+                            +ismall name='pencil'
+                .twelve.wide.column
+                    .f6
+                        +textarea_view key='body' direct=true
+                    +image_view key='image_id' direct=true
+                    +array_view key='tags' icon='tags' direct=true
+                    +array_view key='date_tags' label='date tags' icon='posts' direct=true
+                    +array_view key='Person' label='person' icon='groups' direct=true
+                    +array_view key='Location' label='location' icon='marker' direct=true
+                    +array_view key='Company' label='companies' icon='business' direct=true
+                    +array_view key='related_ids' label='related ids' icon='business' direct=true
+                    .ui.header matches
+                    each matches
+                        .ui.segment
+                            |#{doc_id}: #{tag_match_count}
+            .row
+                .sixteen.wide.column
+                    +related_posts
+            .row
+                .eight.wide.column
+                    +comments
+            
+            
+            
+            
+
+
+template(name='post_edit')
+    with current_doc
+        .ui.padded.stackable.grid.header-wrapper
+            .row
+                .five.wide.column
+                    .ui.inline.header #{title}
+                    a.ui.large.basic.icon.button(href="/post/#{_id}")
+                        i.big.green.checkmark.icon
+                    .ui.basic.icon.button.delete_post_item
+                        i.red.remove.icon
+                .eleven.wide.column
+                    //- +text_edit key='title' icon='header' direct=true
+                    +textarea_edit key='body' direct=true
+                    +array_edit key='tags' icon='tags' direct=true
+                    +array_edit key='location_tags' label='location tags' icon='marker' direct=true
+                    +image_edit key='image_id' direct=true
+                    +array_edit key='Person' label='person' icon='groups' direct=true
+                    +array_edit key='Location' label='location' icon='marker' direct=true
+
+
+template(name='related_posts')
+    .ui.header related posts
+    .ui.icon.button.calculate
+        i.refresh.icon
+    each related_posts
+        .ui.segment
+            a.ui.button(href="/post/#{_id}") view
+            each tags
+                .ui.basic.label #{this}
+        div

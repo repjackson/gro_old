@@ -1,7 +1,7 @@
 if Meteor.isClient
     Template.delta.onCreated ->
-        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
-        @autorun -> Meteor.subscribe 'model_fields', Router.current().params.model_slug
+        # @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        # @autorun -> Meteor.subscribe 'model_fields', Router.current().params.model_slug
         @autorun -> Meteor.subscribe 'my_delta'
 
     Template.delta.helpers
@@ -37,11 +37,11 @@ if Meteor.isClient
                 model:'delta'
                 model_filter: Router.current().params.model_slug
 
-        'keyup .import_subreddit': (e,t)->
-            if e.which is 13
-                val = t.$('.import_subreddit').val()
-                Meteor.call 'pull_subreddit', val, (err,res)->
-                    console.log res
+        # 'keyup .import_subreddit': (e,t)->
+        #     if e.which is 13
+        #         val = t.$('.import_subreddit').val()
+        #         Meteor.call 'pull_subreddit', val, (err,res)->
+        #             console.log res
 
 
         'click .print_delta': (e,t)->
@@ -61,67 +61,37 @@ if Meteor.isClient
                 if confirm "delete  #{delta._id}?"
                     Docs.remove delta._id
 
-        'click .add_model_doc': ->
-            model = Docs.findOne
-                model:'model'
-                slug: Router.current().params.model_slug
+        'click .add_post': ->
+            # model = Docs.findOne
+            #     model:'model'
+            #     slug: Router.current().params.model_slug
             # console.log model
-            if model.collection and model.collection is 'users'
-                name = prompt 'first and last name'
-                split = name.split ' '
-                first_name = split[0]
-                last_name = split[1]
-                username = name.split(' ').join('_')
-                # console.log username
-                Meteor.call 'add_user', first_name, last_name, username, 'guest', (err,res)=>
-                    if err
-                        alert err
-                    else
-                        Meteor.users.update res,
-                            $set:
-                                first_name:first_name
-                                last_name:last_name
-                        Router.go "/m/#{model.slug}/#{res}/edit"
-            else if model.slug is 'shop'
-                new_doc_id = Docs.insert
-                    model:model.slug
-                Router.go "/shop/#{new_doc_id}/edit"
-            else
-                new_doc_id = Docs.insert
-                    model:model.slug
-                Router.go "/m/#{model.slug}/#{new_doc_id}/edit"
+            # if model.collection and model.collection is 'users'
+            #     name = prompt 'first and last name'
+            #     split = name.split ' '
+            #     first_name = split[0]
+            #     last_name = split[1]
+            #     username = name.split(' ').join('_')
+            #     # console.log username
+            #     Meteor.call 'add_user', first_name, last_name, username, 'guest', (err,res)=>
+            #         if err
+            #             alert err
+            #         else
+            #             Meteor.users.update res,
+            #                 $set:
+            #                     first_name:first_name
+            #                     last_name:last_name
+            #             Router.go "/m/#{model.slug}/#{res}/edit"
+            # else if model.slug is 'shop'
+            #     new_doc_id = Docs.insert
+            #         model:model.slug
+            #     Router.go "/shop/#{new_doc_id}/edit"
+            # else
+            new_doc_id = Docs.insert
+                model:'post'
+            Router.go "/post/#{new_doc_id}/edit"
 
 
-        'click .edit_model': ->
-            model = Docs.findOne
-                model:'model'
-                slug: Router.current().params.model_slug
-            Router.go "/model/edit/#{model._id}"
-
-        # 'click .page_up': (e,t)->
-        #     delta = Docs.findOne model:'delta'
-        #     Docs.update delta._id,
-        #         $inc: current_page:1
-        #     Session.set 'is_calculating', true
-        #     Meteor.call 'fo', (err,res)->
-        #         if err then console.log err
-        #         else
-        #             Session.set 'is_calculating', false
-        #
-        # 'click .page_down': (e,t)->
-        #     delta = Docs.findOne model:'delta'
-        #     Docs.update delta._id,
-        #         $inc: current_page:-1
-        #     Session.set 'is_calculating', true
-        #     Meteor.call 'fo', (err,res)->
-        #         if err then console.log err
-        #         else
-        #             Session.set 'is_calculating', false
-
-        # 'click .select_tag': -> selected_tags.push @name
-        # 'click .unselect_tag': -> selected_tags.remove @valueOf()
-        # 'click #clear_tags': -> selected_tags.clear()
-        #
         # 'keyup #search': (e)->
             # switch e.which
             #     when 13
