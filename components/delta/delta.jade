@@ -2,6 +2,7 @@ template(name='delta')
     .ui.stackable.padded.grid
         .row
             .eight.wide.right.aligned.column
+                +nav
                 //- if is_admin
                 .ui.inline.header
                     //- i.icon(class=icon)
@@ -47,14 +48,8 @@ template(name='delta')
                 div
                 each sorted_facets
                     +facet
-            .eight.wide.column
-                //- .ui.inline.header
-                //-     |sort by
-                //- .ui.button
-                //- .ui.stackable.four.column.grid
-                //- .ui.three.stackable.cards
+            .eight.wide.column.scrolling
                 each current_delta.result_ids
-                    //- .column
                     +delta_result
                 
 
@@ -81,9 +76,9 @@ template(name='facet')
         //- div
         each filtering_res
             if name
-                .selector.ui.compact.button.toggle_selection(class=toggle_value_class)
+                .selector.ui.compact.large.button.toggle_selection(class=toggle_value_class)
                     strong #{name}
-                    small #{cal_count} #{count}
+                    //- small #{cal_count} #{count}
                     //- if is_admin
             else
                 .selector.ui.compact.button.toggle_selection(class=toggle_value_class)
@@ -106,29 +101,26 @@ template(name='toggle_delta_config')
 template(name='delta_result')
     with result 
         //- .ui.result.cloud.fluid.card(class=loading_class)
-        .ui.result.stackable.grid.segment(class=loading_class)
+        .ui.result.pointer.segment(class=loading_class)
             //- if image_id
             //-     .four.wide.column
             //-         img.ui.image(src="{{c.url image_id width=400 height=400 gravity='face' crop='fill'}}")
-            .sixteen.wide.column
-                .content
-                    +textarea_view key='body' direct=true
-                    +array_view key='tags' icon='tags' direct=true
-                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
-                    +array_view key='date_tags' label='date tags' icon='posts' direct=true
-                    +image_view key='image_id' direct=true
-                    +user_list_toggle key='bookmark_ids' icon='bookmark' label='Bookmark' color='red'
-                    if can_edit
-                        +remove_button
-                        a.ui.large.icon.basic.button(href="/post/#{_id}/edit" title='edit')
-                            i.pencil.large.icon
-                            //- |edit
-                    a.ui.icon.large.basic.button(href="/post/#{_id}" title='view')
-                        i.right.chevron.large.icon
-                    if _author_id
-                        +author_info
-                    +creation_info
-                +comments
-                    //- +jsonView json=this_data
-                    
+            .f6 {{nl2br body}}
+            //- +array_view key='tags' icon='tags' direct=true
+            //- +array_view key='location_tags' label='location tags' icon='marker' direct=true
+            //- +array_view key='date_tags' label='date tags' icon='posts' direct=true
+            +image_view key='image_id' direct=true
+            //- +user_list_toggle key='bookmark_ids' icon='bookmark' label='Bookmark' color='red'
+            //- if can_edit
+            //-     a.ui.large.icon.basic.button(href="/post/#{_id}/edit" title='edit')
+            //-         i.pencil.large.icon
+            //-         //- |edit
+            //- a.ui.icon.large.basic.button(href="/post/#{_id}" title='view')
+            //-     i.right.chevron.large.icon
+            //- if _author_id
+            //-     +author_info
+            //- +creation_info
+        //- +comments
+            //- +jsonView json=this_data
+                
                     

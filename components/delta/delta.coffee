@@ -229,6 +229,9 @@ if Meteor.isClient
             #
             # Meteor.call 'fum', delta._id, (err,res)->
 
+        'click .result': ->
+            Router.go "/post/#{@_id}"
+
 
 
 if Meteor.isServer

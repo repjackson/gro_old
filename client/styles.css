@@ -2,9 +2,9 @@ body {
     /* font-family: 'Ubuntu', sans-serif !important; */
     font-size: 110% !important;
     /*line-height: 200% !important;*/
-    /* filter: invert(100%) !important; */
-    /* background: #3d3d3d !important; */
-    background: rgba(0, 0, 0, .05) !important
+    filter: invert(100%) !important;
+    background: #3d3d3d !important;
+    /* background: rgba(0, 0, 0, .05) !important */
 }
 
 .invert {

@@ -28,7 +28,6 @@ momentjs:moment
 reactive-var@1.0.11
 raix:handlebar-helpers
 matb33:collection-hooks
-mizzao:autocomplete
 dynamic-import@0.5.1
 mquandalle:jade
 underscore@1.0.10

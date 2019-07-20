@@ -703,23 +703,22 @@ template(name='datetime_view')
 
 template(name='array_edit')
     div
-        .ui.tiny.header
-            if icon
-                +i name=icon
-                //- i.grey.icon(class=icon)
-            if title
-                |#{title}
-            else if label
-                |#{label}
-            else if key
-                |#{key}
-    .ui.fluid.input
+    .ui.tiny.inline.header
+        if icon
+            +i name=icon
+            //- i.grey.icon(class=icon)
+        if title
+            |#{title}
+        else if label
+            |#{label}
+        else if key
+            |#{key}
+    .ui.input
         input.new_element(type='text' placeholder='+' autocomplete="off")
         //- +clear_value                
-    div
     if field_value
         each field_value
-            .ui.large.basic.label
+            .ui.big.basic.label
                 i.delete.icon.remove_element
                 |#{this}
                 

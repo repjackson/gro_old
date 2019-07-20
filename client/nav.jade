@@ -1,33 +1,30 @@
 template(name='nav')
-    .ui.borderless.attached.big.menu.topnav
-        //- a.toggle_sidebar.icon.item.sidebar_on
-        //-     i.large.sidebar.icon
-        if is_loading
-            .icon.item
-                i.big.loading.grey.yin.yang.icon
-        else 
-            a.icon.item.set_post(href='/' title='home')
-                +i name='yin-yang' classes='ui inline mini image'
-        if currentUser
-            .right.menu
-                unless logging_out
-                    //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
-                    //- a.icon.item(href="/user/#{currentUser.username}"}}")
-                    //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
-                    //- a.icon.item.new_item(href="#")
-                    //-     i.circular.plus.icon
-                    a.item(href="/user/#{currentUser.username}"}}")
-                        i.user.icon
-                        | #{currentUser.username}
-                if logging_out
-                    .item
-                        i.large.loading.circle.notch.icon
-                //- else
-                //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
-                //-         i.sign.out.large.icon
-        else
-            a.icon.item(href='/login' title='login') 
-                i.sign.in.large.icon
+    //- .ui.borderless.attached.big.menu.topnav
+    //- a.toggle_sidebar.icon.item.sidebar_on
+    //-     i.large.sidebar.icon
+    if is_loading
+        i.big.loading.grey.yin.yang.icon
+    else 
+        a.ui.icon.button(href='/' title='home')
+            +i name='yin-yang' classes='ui inline mini image'
+    if currentUser
+        unless logging_out
+            //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
+            //- a.icon.item(href="/user/#{currentUser.username}"}}")
+            //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
+            //- a.icon.item.new_item(href="#")
+            //-     i.circular.plus.icon
+            a.ui.icon.button(href="/user/#{currentUser.username}")
+                i.user.icon
+                | #{currentUser.username}
+        if logging_out
+            i.large.loading.circle.notch.icon
+        //- else
+        //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
+        //-         i.sign.out.large.icon
+    else
+        a.icon.item(href='/login' title='login') 
+            i.sign.in.large.icon
 
 
 

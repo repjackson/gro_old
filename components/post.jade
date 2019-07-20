@@ -16,32 +16,39 @@ template(name='post_item')
 
 template(name='post_page')
     with current_doc
-        .ui.padded.stackable.grid.header-wrapper
+        .ui.padded.stackable.grid
             .row
                 .four.wide.column
+                    +nav
                     if can_edit
                         a.ui.icon.button(href="/post/#{_id}/edit" title='edit')
                             +ismall name='pencil'
+                    +comments
                 .twelve.wide.column
-                    .f6
-                        +textarea_view key='body' direct=true
+                    .ui.basic.segment
+                        .f7 {{nl2br body}}
                     +image_view key='image_id' direct=true
                     +array_view key='tags' icon='tags' direct=true
                     +array_view key='date_tags' label='date tags' icon='posts' direct=true
                     +array_view key='Person' label='person' icon='groups' direct=true
                     +array_view key='Location' label='location' icon='marker' direct=true
                     +array_view key='Company' label='companies' icon='business' direct=true
-                    +array_view key='related_ids' label='related ids' icon='business' direct=true
+                    //- +array_view key='related_ids' label='related ids' icon='business' direct=true
                     .ui.header matches
-                    each matches
-                        .ui.segment
-                            |#{doc_id}: #{tag_match_count}
-            .row
-                .sixteen.wide.column
-                    +related_posts
-            .row
-                .eight.wide.column
-                    +comments
+                    .ui.icon.button.calculate
+                        i.refresh.icon
+                    each sorted_matches
+                        +doc_match
+            
+            
+template(name='doc_match')
+    .ui.segment
+        a.ui.button(href="/post/#{doc_id}") view
+        |tag matches: #{tag_match_count}
+        with matching_doc
+            .ui.basic.segment {{nl2br body}}
+            each tags
+                .ui.label(class=matching_tag_class) #{this}
             
             
             

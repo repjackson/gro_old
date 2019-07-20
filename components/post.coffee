@@ -8,12 +8,21 @@ if Meteor.isClient
 
     Template.post_page.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
+        @autorun => Meteor.subscribe 'related_posts', Router.current().params.doc_id
     Template.post_edit.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
 
+    Template.post_page.helpers
+        sorted_matches: ->
+            # console.log @
+            sorted_matches = _.sortBy @matches, 'tag_match_count'
+            sorted_matches.reverse()
+
+    Template.post_page.events
+        'click .calculate': ->
+            Meteor.call 'related_posts', Router.current().params.doc_id
 
     Template.related_posts.onCreated ->
-        @autorun => Meteor.subscribe 'related_posts', Router.current().params.doc_id
     Template.related_posts.helpers
         related_posts: ->
             doc_id = Router.current().params.doc_id
@@ -22,9 +31,17 @@ if Meteor.isClient
                 Docs.find
                     _id:$in:post.related_ids
 
-    Template.related_posts.events
-        'click .calculate': ->
-            Meteor.call 'related_posts', Router.current().params.doc_id
+
+
+    Template.doc_match.helpers
+        matching_doc: ->
+            # console.log @
+            Docs.findOne @doc_id
+
+        matching_tag_class: ->
+            post = Docs.findOne Router.current().params.doc_id
+            if @valueOf() in post.tags then 'grey' else 'basic'
+            # console.log @
 
 
 if Meteor.isServer
@@ -48,9 +65,10 @@ if Meteor.isServer
                         related_ids.push found_match._id
                         match_subobject = _.where(matches, {doc_id: found_match._id})
                         console.log 'match subobject', match_subobject
+                        union = _.intersection(found_match.tags, post.tags)
                         if match_subobject.length > 0
                             Docs.update { _id:doc_id, "matches.doc_id":found_match._id},
-                                $inc: "matches.$.tag_match_count": 1
+                                $set: "matches.$.tag_match_count": union.length
                         else
                             match_subobject = {doc_id:found_match._id,tag_match_count:1}
                             Docs.update _id:doc_id,
