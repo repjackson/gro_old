@@ -267,24 +267,24 @@ template(name='textarea_edit')
 
 
 
-template(name='html_edit')
-    .ui.form
-        .field
-            label 
-                if icon
-                    i.icon(name=icon)
-                    //- +i name=icon classes='ui avatar image'
-                    //- i.icon(class=icon)
-                if title
-                    |#{title}
-                else if key
-                    |#{key}
-                else
-                    |#{this}
-    .froala-container
-        +froalaReactive getFEContext
-    //- if is_dev
-    +call_watson mode='html'
+//- template(name='html_edit')
+//-     .ui.form
+//-         .field
+//-             label 
+//-                 if icon
+//-                     i.icon(name=icon)
+//-                     //- +i name=icon classes='ui avatar image'
+//-                     //- i.icon(class=icon)
+//-                 if title
+//-                     |#{title}
+//-                 else if key
+//-                     |#{key}
+//-                 else
+//-                     |#{this}
+//-     .froala-container
+//-         +froalaReactive getFEContext
+//-     //- if is_dev
+//-     +call_watson mode='html'
     //- div
     //- +tone mode='html'
     //- if watson

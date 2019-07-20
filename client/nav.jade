@@ -6,17 +6,17 @@ template(name='nav')
             .icon.item
                 i.big.loading.grey.yin.yang.icon
         else 
-            a.icon.item.set_post(href='/' class="{{isActivePath '/'}}" title='home')
+            a.icon.item.set_post(href='/' title='home')
                 +i name='yin-yang' classes='ui inline mini image'
         if currentUser
             .right.menu
                 unless logging_out
-                    //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications" class="{{isActiveRoute regex='notifications'}}")
-                    //- a.icon.item(href="/user/#{currentUser.username}" class="{{isActiveRoute regex='profile'}}")
+                    //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
+                    //- a.icon.item(href="/user/#{currentUser.username}"}}")
                     //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
                     //- a.icon.item.new_item(href="#")
                     //-     i.circular.plus.icon
-                    a.item(href="/user/#{currentUser.username}" class="{{isActiveRoute regex='user_chat'}}")
+                    a.item(href="/user/#{currentUser.username}"}}")
                         i.user.icon
                         | #{currentUser.username}
                 if logging_out
