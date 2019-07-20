@@ -32,6 +32,11 @@ if Meteor.isClient
                     _id:$in:post.related_ids
 
 
+    Template.doc_match.events
+        'click .doc_match': ->
+            console.log @
+            Router.go "/post/#{@doc_id}"
+
 
     Template.doc_match.helpers
         matching_doc: ->
@@ -70,7 +75,7 @@ if Meteor.isServer
                             Docs.update { _id:doc_id, "matches.doc_id":found_match._id},
                                 $set: "matches.$.tag_match_count": union.length
                         else
-                            match_subobject = {doc_id:found_match._id,tag_match_count:1}
+                            match_subobject = {doc_id:found_match._id,tag_match_count:union.length}
                             Docs.update _id:doc_id,
                                 $addToSet: "matches": match_subobject
 

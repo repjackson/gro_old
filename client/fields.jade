@@ -131,7 +131,7 @@ template(name='image_view')
         //-     |#{key}
         //- else
         //-     |#{this}
-        img.ui.centered.rounded.large.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
+        img.ui.centered.rounded.large.invert.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- img.ui.centered.rounded.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- a(href="{{c.url field_value gravity='face' crop='fit'}}")
         //-     |download
@@ -200,7 +200,7 @@ template(name='image_edit')
         .field
             if field_value
                 //- label Image
-                img.ui.large.centered.rounded.image(src="{{c.url field_value height=500 gravity='face' crop='fill'}}")
+                img.ui.fluid.centered.rounded.invert.image(src="{{c.url field_value height=500 gravity='face' crop='fill'}}")
                 a#remove_photo.ui.right.corner.link.label
                     i.remove.red.link.icon
             else

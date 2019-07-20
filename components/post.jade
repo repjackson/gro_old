@@ -28,13 +28,13 @@ template(name='post_page')
                     .ui.basic.segment
                         .f7 {{nl2br body}}
                     +image_view key='image_id' direct=true
-                    +array_view key='tags' icon='tags' direct=true
-                    +array_view key='date_tags' label='date tags' icon='posts' direct=true
-                    +array_view key='Person' label='person' icon='groups' direct=true
-                    +array_view key='Location' label='location' icon='marker' direct=true
-                    +array_view key='Company' label='companies' icon='business' direct=true
+                    //- +array_view key='tags' icon='tags' direct=true
+                    //- +array_view key='date_tags' label='date tags' icon='posts' direct=true
+                    //- +array_view key='Person' label='person' icon='groups' direct=true
+                    //- +array_view key='Location' label='location' icon='marker' direct=true
+                    //- +array_view key='Company' label='companies' icon='business' direct=true
                     //- +array_view key='related_ids' label='related ids' icon='business' direct=true
-                    .ui.header matches
+                    .ui.inline.header top matches
                     .ui.icon.button.calculate
                         i.refresh.icon
                     each sorted_matches
@@ -42,13 +42,14 @@ template(name='post_page')
             
             
 template(name='doc_match')
-    .ui.segment
-        a.ui.button(href="/post/#{doc_id}") view
-        |tag matches: #{tag_match_count}
+    .ui.segment.pointer.doc_match
+        //- |tag matches: #{tag_match_count}
         with matching_doc
+            img.ui.centered.rounded.medium.invert.image(src="{{c.url image_id }}")
+
             .ui.basic.segment {{nl2br body}}
             each tags
-                .ui.label(class=matching_tag_class) #{this}
+                .ui.small.label(class=matching_tag_class) #{this}
             
             
             
@@ -69,7 +70,6 @@ template(name='post_edit')
                     //- +text_edit key='title' icon='header' direct=true
                     +textarea_edit key='body' direct=true
                     +array_edit key='tags' icon='tags' direct=true
-                    +array_edit key='location_tags' label='location tags' icon='marker' direct=true
                     +image_edit key='image_id' direct=true
                     +array_edit key='Person' label='person' icon='groups' direct=true
                     +array_edit key='Location' label='location' icon='marker' direct=true
@@ -81,6 +81,9 @@ template(name='related_posts')
         i.refresh.icon
     each related_posts
         .ui.segment
+            .ui.header has image
+            img.ui.centered.rounded.large.invert.image(src="{{c.url image_id }}")
+            //- if image_id
             a.ui.button(href="/post/#{_id}") view
             each tags
                 .ui.basic.label #{this}

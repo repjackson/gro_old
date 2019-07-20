@@ -4,10 +4,10 @@ template(name='delta')
             .eight.wide.right.aligned.column
                 +nav
                 //- if is_admin
-                .ui.inline.header
-                    //- i.icon(class=icon)
-                    //- +i name=icon
-                    |posts
+                //- .ui.inline.header
+                //-     //- i.icon(class=icon)
+                //-     //- +i name=icon
+                //-     |posts
                 unless is_loading
                     if currentUser
                         .ui.icon.large.basic.button.add_post(title="Add #{title}")
@@ -17,23 +17,14 @@ template(name='delta')
                         //- +edit_circular.button
                     //- if currentUser
                     //-     +user_list_toggle key='bookmark_ids' icon='bookmark' label='bookmark' color='red'
-                    if is_dev
-                        .ui.icon.large.basic.button.edit_model
-                            i.large.cog.icon
-                            //- +i name='settings'
-                            //- | Configure #{plural}
-                    // .ui.divider
-                    // // each sessions
-                    // //     .ui.icon.basic.button.select_session(class=session_selector_class title='select session')
-                    // //         i.play.icon
                     if current_delta
                         if is_dev
                             .ui.icon.large.basic.button.print_delta(title='print session doc')
                                 i.code.icon
-                        .ui.reset.icon.basic.button(title='reload session')
-                            i.refresh.icon
-                        .ui.delete_delta.icon.basic.button(title='delete session')
-                            i.trash.icon
+                            .ui.reset.icon.basic.button(title='reload session')
+                                i.refresh.icon
+                            .ui.delete_delta.icon.basic.button(title='delete session')
+                                i.trash.icon
                     else
                         .create_delta.ui.large.button(title='new session')
                             i.plus.icon

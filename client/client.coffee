@@ -1,6 +1,3 @@
-@selected_tags = new ReactiveArray []
-@selected_user_tags = new ReactiveArray []
-
 # Meteor.startup ->
 #     scheduler.init "scheduler_here", new Date()
 #     scheduler.meteor(Docs.find(model:'event'), Docs);
@@ -21,9 +18,6 @@ Template.registerHelper 'dev', () -> Meteor.isDevelopment
 Template.registerHelper 'is_author', () ->
     # console.log @
     @_author_id is Meteor.userId()
-Template.registerHelper 'is_grandparent_author', () ->
-    grandparent = Template.parentData(2)
-    grandparent._author_id is Meteor.userId()
 Template.registerHelper 'to_percent', (number) -> (number*100).toFixed()
 Template.registerHelper 'long_date', (input) -> moment(input).format("dddd, MMMM Do h:mm a")
 Template.registerHelper 'short_date', (input) -> moment(input).format("h:mm a")
@@ -47,21 +41,9 @@ Template.registerHelper 'current_day', () -> moment(Date.now()).format("DD")
 
 Template.registerHelper 'author', () -> Meteor.users.findOne @_author_id
 
-Template.registerHelper 'is_text', () ->
-    # console.log @field_type
-    @field_type is 'text'
-
-Template.registerHelper 'template_parent', () ->
-    # console.log Template.parentData()
-    Template.parentData()
-
 Template.registerHelper 'current_user', (input) ->
     Meteor.user() and Meteor.user().username is Router.current().params.username
 
-
-Template.registerHelper 'user_is_client', (input) ->
-    user = Meteor.users.findOne username:Router.current().params.username
-    if user and user.roles and 'client' in user.roles then true else false
 
 Template.registerHelper 'nl2br', (text)->
     nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')

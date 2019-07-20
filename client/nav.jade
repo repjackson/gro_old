@@ -12,8 +12,6 @@ template(name='nav')
             //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
             //- a.icon.item(href="/user/#{currentUser.username}"}}")
             //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
-            //- a.icon.item.new_item(href="#")
-            //-     i.circular.plus.icon
             a.ui.icon.button(href="/user/#{currentUser.username}")
                 i.user.icon
                 | #{currentUser.username}
