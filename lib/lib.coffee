@@ -115,20 +115,6 @@ Meteor.methods
 
 
 
-        # 'keyup #quick_add': (e,t)->
-        #     e.preventDefault
-        #     tag = $('#quick_add').val().toLowerCase()
-        #     if e.which is 13
-        #         if tag.length > 0
-        #             split_tags = tag.match(/\S+/g)
-        #             $('#quick_add').val('')
-        #             Meteor.call 'add', split_tags
-        #             selected_tags.clear()
-        #             for tag in split_tags
-        #                 selected_tags.push tag
-        #
-
-
 if Meteor.isServer
     Docs.allow
         insert: (userId, doc) -> doc._author_id is userId

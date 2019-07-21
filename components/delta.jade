@@ -96,11 +96,16 @@ template(name='delta_result')
             //- if image_id
             //-     .four.wide.column
             //-         img.ui.image(src="{{c.url image_id width=400 height=400 gravity='face' crop='fill'}}")
-            .f6 {{nl2br body}}
+            if body
+                .f6 {{nl2br body}}
             //- +array_view key='tags' icon='tags' direct=true
             //- +array_view key='location_tags' label='location tags' icon='marker' direct=true
             //- +array_view key='date_tags' label='date tags' icon='posts' direct=true
+            if youtube_id
+                +youtube_view key='youtube_id' icon='youtube' direct=true
+                .ui.hidden.divider
             +image_view key='image_id' direct=true
+    
             //- +user_list_toggle key='bookmark_ids' icon='bookmark' label='Bookmark' color='red'
             //- if can_edit
             //-     a.ui.large.icon.basic.button(href="/post/#{_id}/edit" title='edit')

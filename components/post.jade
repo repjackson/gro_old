@@ -1,19 +1,3 @@
-template(name='post_item')
-    .ui.link.card.post_card
-        .image
-            img(src="{{c.url image_id height=300 crop='lpad'}}")
-        .content
-            .header #{title}
-            |!{description}
-        .content
-            i.small.posts.icon
-            each date_tags
-                .ui.small.basic.label #{this}
-        .content
-            |#{attending_usernames.length} members
-            each members
-                .ui.basic.label #{this}
-
 template(name='post_page')
     with current_doc
         .ui.padded.stackable.grid
@@ -25,8 +9,11 @@ template(name='post_page')
                             +ismall name='pencil'
                     +comments
                 .twelve.wide.column
-                    .ui.basic.segment
-                        .f7 {{nl2br body}}
+                    if body
+                        .ui.basic.segment
+                            .f7 {{nl2br body}}
+                    if youtube_id
+                        +youtube_view key='youtube_id' icon='youtube' direct=true
                     +image_view key='image_id' direct=true
                     //- +array_view key='tags' icon='tags' direct=true
                     //- +array_view key='date_tags' label='date tags' icon='posts' direct=true
@@ -70,6 +57,7 @@ template(name='post_edit')
                 .eleven.wide.column
                     //- +text_edit key='title' icon='header' direct=true
                     +textarea_edit key='body' direct=true
+                    +youtube_edit key='youtube_id' icon='youtube' direct=true
                     +array_edit key='tags' icon='tags' direct=true
                     +image_edit key='image_id' direct=true
                     +array_edit key='Person' label='person' icon='groups' direct=true

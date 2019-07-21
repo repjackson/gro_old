@@ -260,7 +260,7 @@ template(name='textarea_edit')
                     |#{key}
                 else
                     |#{this}
-            textarea.edit_textarea(rows='5') #{field_value}
+            textarea.edit_textarea(rows='20') #{field_value}
         +call_watson mode='text' key=key
         if watson
             +watson_view
@@ -715,6 +715,8 @@ template(name='array_edit')
             |#{key}
     .ui.input
         input.new_element(type='text' placeholder='+' autocomplete="off")
+    .ui.input
+        input#quick_add(type='text' placeholder='quick add' autocomplete="off")
         //- +clear_value                
     if field_value
         each field_value
@@ -835,14 +837,14 @@ template(name='youtube_edit')
             |Youtube Id
         input.youtube_id(type='text' value=field_value placeholder=placeholder autocomplete="off")
     if field_value
-        iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
+        iframe.invert(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
 
 template(name='youtube_view')
     if field_value
         if icon
             +i name=icon
             //- i.icon(class=icon)
-        .ui.embed(data-source="youtube" data-id=field_value)
+        .ui.embed.invert(data-source="youtube" data-id=field_value)
 
         //- // iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
         //- iframe(src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')

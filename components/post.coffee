@@ -1,17 +1,15 @@
 if Meteor.isClient
-    Template.post_item.events
-        'click .post_card': ->
-            Docs.update @_id,
-                $inc:views:1
-            Router.go "/post/#{@_id}"
-
-
     Template.post_page.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
         @autorun => Meteor.subscribe 'related_posts', Router.current().params.doc_id
     Template.post_edit.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
 
+    Template.post_edit.events
+        'click .delete_post_item': ->
+            if confirm 'delete post?'
+                Docs.remove Router.current().params.doc_id
+                Router.go '/'
     Template.post_page.helpers
         sorted_matches: ->
             # console.log @
