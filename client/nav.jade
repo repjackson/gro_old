@@ -3,7 +3,7 @@ template(name='nav')
     //- a.toggle_sidebar.icon.item.sidebar_on
     //-     i.large.sidebar.icon
     if is_loading
-        i.big.loading.grey.yin.yang.icon
+        i.huge.loading.grey.yin.yang.icon
     else 
         a.ui.icon.button.reset(href='/' title='home')
             +i name='yin-yang' classes='ui inline mini image'
@@ -21,7 +21,7 @@ template(name='nav')
         //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
         //-         i.sign.out.large.icon
     else
-        a.icon.item(href='/login' title='login') 
+        a.ui.icon.button(href='/login' title='login') 
             i.sign.in.large.icon
 
 

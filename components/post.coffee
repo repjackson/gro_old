@@ -14,7 +14,7 @@ if Meteor.isClient
         sorted_matches: ->
             # console.log @
             sorted_matches = _.sortBy @matches, 'tag_match_count'
-            sorted_matches.reverse()
+            sorted_matches.reverse()[..2]
 
     Template.post_page.events
         'click .calculate': ->

@@ -60,33 +60,33 @@ Meteor.methods
                 filters:[]
                 res:[]
             }
-            {
-                title:'sentiment'
-                icon:'user-male'
-                key:'doc_sentiment_label'
-                rank:34
-                field_type:'text'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'quantities'
-                icon:'user-male'
-                key:'Quantity'
-                rank:36
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'when'
-                icon:'clock'
-                key:'_timestamp_tags'
-                rank:40
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
+            # {
+            #     title:'sentiment'
+            #     icon:'user-male'
+            #     key:'doc_sentiment_label'
+            #     rank:34
+            #     field_type:'text'
+            #     filters:[]
+            #     res:[]
+            # }
+            # {
+            #     title:'quantities'
+            #     icon:'user-male'
+            #     key:'Quantity'
+            #     rank:36
+            #     field_type:'array'
+            #     filters:[]
+            #     res:[]
+            # }
+            # {
+            #     title:'when'
+            #     icon:'clock'
+            #     key:'_timestamp_tags'
+            #     rank:40
+            #     field_type:'array'
+            #     filters:[]
+            #     res:[]
+            # }
 
         ]
 
@@ -153,7 +153,7 @@ Meteor.methods
         modifier =
             {
                 fields:_id:1
-                limit:10
+                limit:3
                 sort:_timestamp:-1
             }
 

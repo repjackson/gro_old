@@ -48,16 +48,16 @@ template(name='post_edit')
     with current_doc
         .ui.padded.stackable.grid.header-wrapper
             .row
-                .five.wide.column
+                .eight.wide.column
                     .ui.inline.header #{title}
                     a.ui.large.basic.icon.button(href="/post/#{_id}")
                         i.big.green.checkmark.icon
                     .ui.basic.icon.button.delete_post_item
                         i.red.remove.icon
-                .eleven.wide.column
                     //- +text_edit key='title' icon='header' direct=true
                     +textarea_edit key='body' direct=true
                     +youtube_edit key='youtube_id' icon='youtube' direct=true
+                .eight.wide.column
                     +array_edit key='tags' icon='tags' direct=true
                     +image_edit key='image_id' direct=true
                     +array_edit key='Person' label='person' icon='groups' direct=true
