@@ -1,13 +1,13 @@
 Meteor.methods
     set_facets: (model_slug)->
-        console.log 'setting facets', model_slug
+        # console.log 'setting facets', model_slug
         delta = Docs.findOne
             model:'delta'
             _author_id:Meteor.userId()
         model = Docs.findOne
             model:'model'
             slug:model_slug
-        console.log 'model', model
+        # console.log 'model', model
         # fields =
         #     Docs.find
         #         model:'field'
@@ -33,6 +33,15 @@ Meteor.methods
         #     ]
 
         facets = [
+            {
+                title:'type'
+                icon:'cube'
+                key:'model'
+                rank:6
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
             {
                 title:'tags'
                 icon:'tags'
@@ -60,6 +69,60 @@ Meteor.methods
                 filters:[]
                 res:[]
             }
+            {
+                title:'author'
+                icon:'user-male'
+                key:'_author_username'
+                rank:33
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'upvoters'
+                icon:'thumbs-up'
+                key:'upvoter_usernames'
+                rank:35
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            {
+                title:'downvoters'
+                icon:'thumbs-down'
+                key:'downvoter_usernames'
+                rank:36
+                field_type:'array'
+                filters:[]
+                res:[]
+            }
+            # {
+            #     title:'job title'
+            #     icon:'business'
+            #     key:'JobTitle'
+            #     rank:35
+            #     field_type:'array'
+            #     filters:[]
+            #     res:[]
+            # }
+            # {
+            #     title:'company'
+            #     icon:'business'
+            #     key:'Company'
+            #     rank:37
+            #     field_type:'array'
+            #     filters:[]
+            #     res:[]
+            # }
+            # {
+            #     title:'organization'
+            #     icon:'business'
+            #     key:'Organization'
+            #     rank:39
+            #     field_type:'array'
+            #     filters:[]
+            #     res:[]
+            # }
             # {
             #     title:'sentiment'
             #     icon:'user-male'
@@ -179,7 +242,7 @@ Meteor.methods
         # delta = Docs.findOne delta_id
 
     agg: (query, key)->
-        limit=42
+        limit=20
         options = { explain:false }
         pipe =  [
             { $match: query }

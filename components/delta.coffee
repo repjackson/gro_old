@@ -162,10 +162,10 @@ if Meteor.isClient
             facet = Template.parentData()
             delta = Docs.findOne model:'delta'
             if Session.equals 'loading', true
-                 'disabled basic'
+                 'disabled'
             else if facet.filters.length > 0 and @name in facet.filters
-                'active'
-            else 'basic'
+                'grey'
+            else ''
 
     Template.delta_result.onRendered ->
         # Meteor.setTimeout ->
@@ -227,8 +227,8 @@ if Meteor.isClient
             #
             # Meteor.call 'fum', delta._id, (err,res)->
 
-        'click .result': ->
-            Router.go "/post/#{@_id}"
+        # 'click .result': ->
+        #     Router.go "/post/#{@_id}"
 
 
 

@@ -1,11 +1,14 @@
 if Meteor.isClient
     Template.post_page.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
-        @autorun => Meteor.subscribe 'related_posts', Router.current().params.doc_id
+        # @autorun => Meteor.subscribe 'related_posts', Router.current().params.doc_id
     Template.post_edit.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
 
     Template.post_edit.events
+        'click .save_post': ->
+            Meteor.call 'related_posts', Router.current().params.doc_id
+
         'click .delete_post_item': ->
             if confirm 'delete post?'
                 Docs.remove Router.current().params.doc_id
@@ -20,15 +23,17 @@ if Meteor.isClient
         'click .calculate': ->
             Meteor.call 'related_posts', Router.current().params.doc_id
 
-    Template.related_posts.onCreated ->
-    Template.related_posts.helpers
-        related_posts: ->
-            doc_id = Router.current().params.doc_id
-            post = Docs.findOne doc_id
-            if post.related_ids
-                Docs.find
-                    _id:$in:post.related_ids
+    # Template.related_posts.helpers
+    #     related_posts: ->
+    #         doc_id = Router.current().params.doc_id
+    #         post = Docs.findOne doc_id
+    #         if post.related_ids
+    #             Docs.find
+    #                 _id:$in:post.related_ids
 
+    Template.doc_match.onCreated ->
+        # console.log @
+        @autorun => Meteor.subscribe 'doc', @data.doc_id
 
     Template.doc_match.events
         'click .doc_match': ->
@@ -67,7 +72,7 @@ if Meteor.isServer
                     for found_match in found_matches.fetch()
                         related_ids.push found_match._id
                         match_subobject = _.where(matches, {doc_id: found_match._id})
-                        console.log 'match subobject', match_subobject
+                        # console.log 'match subobject', match_subobject
                         union = _.intersection(found_match.tags, post.tags)
                         if match_subobject.length > 0
                             Docs.update { _id:doc_id, "matches.doc_id":found_match._id},
@@ -78,7 +83,7 @@ if Meteor.isServer
                                 $addToSet: "matches": match_subobject
 
                 # console.log 'found match with ', tag, found_matches.fetch()
-            console.log 'related ids', related_ids
+            # console.log 'related ids', related_ids
             Docs.update doc_id,
                 $set:related_ids:related_ids
 

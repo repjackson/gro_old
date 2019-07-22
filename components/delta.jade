@@ -1,7 +1,7 @@
 template(name='delta')
     .ui.stackable.padded.grid
         .row
-            .eight.wide.right.aligned.column
+            .eight.wide.right.aligned.column.scrolling
                 +nav
                 //- if is_admin
                 //- .ui.inline.header
@@ -10,7 +10,7 @@ template(name='delta')
                 //-     |posts
                 unless is_loading
                     if currentUser
-                        .ui.icon.large.basic.button.add_post(title="Add #{title}")
+                        .ui.icon.large.circular.button.add_post(title="Add #{title}")
                             i.plus.large.icon
                         //- +i name='plus'
                     //- if can_edit
@@ -19,11 +19,11 @@ template(name='delta')
                     //-     +user_list_toggle key='bookmark_ids' icon='bookmark' label='bookmark' color='red'
                     if current_delta
                         if is_dev
-                            .ui.icon.large.basic.button.print_delta(title='print session doc')
+                            .ui.icon.large.button.print_delta(title='print session doc')
                                 i.code.icon
-                            .ui.reset.icon.basic.button(title='reload session')
+                            .ui.reset.icon.button(title='reload session')
                                 i.refresh.icon
-                            .ui.delete_delta.icon.basic.button(title='delete session')
+                            .ui.delete_delta.icon.button(title='delete session')
                                 i.trash.icon
                     else
                         .create_delta.ui.large.button(title='new session')
@@ -37,9 +37,13 @@ template(name='delta')
                     //-         input.import_subreddit(type='text' placeholder='import_subreddit')
                 // |did: #{session_delta_id}
                 div
-                each sorted_facets
-                    +facet
-            .eight.wide.column
+                if sorted_facets.length
+                    each sorted_facets
+                        +facet
+                else
+                    unless is_loading
+                        .ui.header no results from filter, click the yin yang to reset
+            .eight.wide.column.scrolling
                 each current_delta.result_ids
                     +delta_result
                 
@@ -60,14 +64,13 @@ template(name='facet')
                 |#{key}
                 //- i.dropdown.icon
             //- .active.content
-        if is_admin
-            .ui.icon.small.transparent.input
-                i.search.icon
-                input.add_filter(type='text')
+        .ui.icon.small.transparent.input
+            i.search.icon
+            input.add_filter(type='text')
         //- div
         each filtering_res
             if name
-                .selector.ui.compact.large.button.toggle_selection(class=toggle_value_class)
+                .selector.ui.large.compact.circular.button.toggle_selection(class=toggle_value_class)
                     strong #{name}
                     //- small #{cal_count} #{count}
                     //- if is_admin
@@ -92,7 +95,7 @@ template(name='toggle_delta_config')
 template(name='delta_result')
     with result 
         //- .ui.result.cloud.fluid.card(class=loading_class)
-        .ui.result.pointer.segment(class=loading_class)
+        .ui.result.segment(class=loading_class)
             //- if image_id
             //-     .four.wide.column
             //-         img.ui.image(src="{{c.url image_id width=400 height=400 gravity='face' crop='fill'}}")
@@ -105,17 +108,17 @@ template(name='delta_result')
                 +youtube_view key='youtube_id' icon='youtube' direct=true
                 .ui.hidden.divider
             +image_view key='image_id' direct=true
-    
-            //- +user_list_toggle key='bookmark_ids' icon='bookmark' label='Bookmark' color='red'
-            //- if can_edit
-            //-     a.ui.large.icon.basic.button(href="/post/#{_id}/edit" title='edit')
-            //-         i.pencil.large.icon
-            //-         //- |edit
-            //- a.ui.icon.large.basic.button(href="/post/#{_id}" title='view')
-            //-     i.right.chevron.large.icon
-            //- if _author_id
-            //-     +author_info
-            //- +creation_info
+            +user_list_toggle key='bookmark_ids' icon='bookmark' label='bookmark' color='red'
+            +voting
+            if can_edit
+                a.ui.large.icon.button(href="/post/#{_id}/edit" title='edit')
+                    i.pencil.large.icon
+                    //- |edit
+            a.ui.icon.large.button(href="/post/#{_id}" title='view')
+                i.right.chevron.large.icon
+            if _author_id
+                +author_info
+            +creation_info
         //- +comments
             //- +jsonView json=this_data
                 

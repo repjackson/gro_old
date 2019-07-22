@@ -158,9 +158,9 @@ template(name='voting_full')
         |voting
     if points
         strong #{points}
-    .ui.icon.compact.small.button.upvote(class=upvote_class title='upvote')
+    .ui.icon.compact.circular.button.upvote(class=upvote_class title='upvote')
         +i name='thumb-up' classes='ui avatar image'
-    .ui.icon.compact.small.button.downvote(title='downvote' class=downvote_class)
+    .ui.icon.compact.circular.button.downvote(title='downvote' class=downvote_class)
         +i name='thumbs-down' classes='ui avatar image'
     if upvoter_ids
         .ui.small.header upvoters

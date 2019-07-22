@@ -151,91 +151,121 @@ if Meteor.isClient
             if @downvoter_ids and Meteor.userId() in @downvoter_ids
                 Docs.update @_id,
                     $pull: downvoter_ids:Meteor.userId()
-                    $addToSet: upvoter_ids:Meteor.userId()
+                    $addToSet:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
                     $inc:points:2
+                Meteor.users.update @_author_id,
+                    $inc:karma:2
             else if @upvoter_ids and Meteor.userId() in @upvoter_ids
                 Docs.update @_id,
-                    $pull: upvoter_ids:Meteor.userId()
+                    $pull:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
                     $inc:points:-1
+                Meteor.users.update @_author_id,
+                    $inc:karma:-1
             else
                 Docs.update @_id,
-                    $addToSet: upvoter_ids:Meteor.userId()
+                    $addToSet:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
                     $inc:points:1
-            # Meteor.users.update @_author_id,
-            #     $inc:karma:1
+                Meteor.users.update @_author_id,
+                    $inc:karma:1
 
         'click .downvote': ->
             if @upvoter_ids and Meteor.userId() in @upvoter_ids
                 Docs.update @_id,
-                    $pull: upvoter_ids:Meteor.userId()
-                    $addToSet: downvoter_ids:Meteor.userId()
+                    $pull:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
+                    $addToSet:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
                     $inc:points:-2
+                Meteor.users.update @_author_id,
+                    $inc:karma:-2
             else if @downvoter_ids and Meteor.userId() in @downvoter_ids
                 Docs.update @_id,
-                    $pull: downvoter_ids:Meteor.userId()
+                    $pull:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
                     $inc:points:1
+                Meteor.users.update @_author_id,
+                    $inc:karma:1
             else
                 Docs.update @_id,
-                    $addToSet: downvoter_ids:Meteor.userId()
+                    $addToSet:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
                     $inc:points:-1
-            # Meteor.users.update @_author_id,
-            #     $inc:karma:-1
+                Meteor.users.update @_author_id,
+                    $inc:karma:-1
 
 
 
 
     Template.voting_full.helpers
         upvote_class: -> if @upvoter_ids and Meteor.userId() in @upvoter_ids then 'green' else 'outline'
-        downvote_class: -> if @downvoter_ids and Meteor.userId() in @downvoter_ids then 'red' else 'outline'
+        downvote_class: -> if @downvoter_ids and Meteor.userId() in @downvoter_ids then 'green' else 'outline'
 
     Template.voting_full.events
         'click .upvote': ->
             if @downvoter_ids and Meteor.userId() in @downvoter_ids
                 Docs.update @_id,
                     $pull: downvoter_ids:Meteor.userId()
-                    $addToSet: upvoter_ids:Meteor.userId()
-                    $inc:
-                        points:2
-                        upvotes:1
-                        downvotes:-1
+                    $addToSet:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
+                    $inc:points:2
+                Meteor.users.update @_author_id,
+                    $inc:karma:2
             else if @upvoter_ids and Meteor.userId() in @upvoter_ids
                 Docs.update @_id,
-                    $pull: upvoter_ids:Meteor.userId()
-                    $inc:
-                        points:-1
-                        upvotes:-1
+                    $pull:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
+                    $inc:points:-1
+                Meteor.users.update @_author_id,
+                    $inc:karma:-1
             else
                 Docs.update @_id,
-                    $addToSet: upvoter_ids:Meteor.userId()
-                    $inc:
-                        upvotes:1
-                        points:1
-            # Meteor.users.update @_author_id,
-            #     $inc:karma:1
+                    $addToSet:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
+                    $inc:points:1
+                Meteor.users.update @_author_id,
+                    $inc:karma:1
 
         'click .downvote': ->
             if @upvoter_ids and Meteor.userId() in @upvoter_ids
                 Docs.update @_id,
-                    $pull: upvoter_ids:Meteor.userId()
-                    $addToSet: downvoter_ids:Meteor.userId()
-                    $inc:
-                        points:-2
-                        downvotes:1
-                        upvotes:-1
+                    $pull:
+                        upvoter_ids:Meteor.userId()
+                        upvoter_usernames:Meteor.user().username
+                    $addToSet:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
+                    $inc:points:-2
+                Meteor.users.update @_author_id,
+                    $inc:karma:-2
             else if @downvoter_ids and Meteor.userId() in @downvoter_ids
                 Docs.update @_id,
-                    $pull: downvoter_ids:Meteor.userId()
-                    $inc:
-                        points:1
-                        downvotes:-1
+                    $pull:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
+                    $inc:points:1
+                Meteor.users.update @_author_id,
+                    $inc:karma:1
             else
                 Docs.update @_id,
-                    $addToSet: downvoter_ids:Meteor.userId()
-                    $inc:
-                        points:-1
-                        downvotes:1
-            # Meteor.users.update @_author_id,
-            #     $inc:karma:-1
+                    $addToSet:
+                        downvoter_ids:Meteor.userId()
+                        downvoter_usernames:Meteor.user().username
+                    $inc:points:-1
+                Meteor.users.update @_author_id,
+                    $inc:karma:-1
 
 
 

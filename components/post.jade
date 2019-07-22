@@ -2,25 +2,28 @@ template(name='post_page')
     with current_doc
         .ui.padded.stackable.grid
             .row
-                .four.wide.column
-                    +nav
+                .eight.wide.column
+                    .ui.right.aligned.basic.segment
+                        +nav
                     if can_edit
                         a.ui.icon.button(href="/post/#{_id}/edit" title='edit')
                             +ismall name='pencil'
-                    +comments
-                .twelve.wide.column
                     if body
                         .ui.basic.segment
                             .f7 {{nl2br body}}
                     if youtube_id
                         +youtube_view key='youtube_id' icon='youtube' direct=true
                     +image_view key='image_id' direct=true
-                    //- +array_view key='tags' icon='tags' direct=true
-                    //- +array_view key='date_tags' label='date tags' icon='posts' direct=true
-                    //- +array_view key='Person' label='person' icon='groups' direct=true
-                    //- +array_view key='Location' label='location' icon='marker' direct=true
-                    //- +array_view key='Company' label='companies' icon='business' direct=true
+                    +array_view key='tags' icon='tags' direct=true
+                    +array_view key='Person' label='person' icon='groups' direct=true
+                    +array_view key='Location' label='location' icon='marker' direct=true
+                    +array_view key='Company' label='companies' icon='business' direct=true
                     //- +array_view key='related_ids' label='related ids' icon='business' direct=true
+                    +array_view key='Organization' label='organization' icon='building' direct=true
+                    +array_view key='JobTitle' label='job title' icon='manager' direct=true
+                    +comments
+                    +voting_full
+                .eight.wide.column
                     .ui.inline.header top matches
                     .ui.icon.button.calculate
                         i.refresh.icon
@@ -29,12 +32,14 @@ template(name='post_page')
             
             
 template(name='doc_match')
-    .ui.segment.pointer.doc_match
+    .ui.tertiary.segment.pointer.doc_match
         //- |tag matches: #{tag_match_count}
         with matching_doc
             img.ui.centered.rounded.medium.invert.image(src="{{c.url image_id }}")
-
-            .ui.basic.segment {{nl2br body}}
+            if youtube_id
+                +youtube_view key='youtube_id' icon='youtube' direct=true
+            if body
+                .ui.basic.segment {{nl2br body}}
             each tags
                 .ui.small.label(class=matching_tag_class) #{this}
             +author_info
@@ -50,21 +55,29 @@ template(name='post_edit')
             .row
                 .eight.wide.column
                     .ui.inline.header #{title}
-                    a.ui.large.basic.icon.button(href="/post/#{_id}")
+                    a.ui.large.basic.icon.button.save_post(href="/post/#{_id}")
                         i.big.green.checkmark.icon
                     .ui.basic.icon.button.delete_post_item
                         i.red.remove.icon
                     //- +text_edit key='title' icon='header' direct=true
                     +textarea_edit key='body' direct=true
                     +youtube_edit key='youtube_id' icon='youtube' direct=true
-                .eight.wide.column
-                    +array_edit key='tags' icon='tags' direct=true
                     +image_edit key='image_id' direct=true
-                    +array_edit key='Person' label='person' icon='groups' direct=true
-                    +array_edit key='Company' label='companies' icon='business' direct=true
-                    +array_edit key='Quantity' label='quantities' icon='business' direct=true
-                    +array_edit key='Location' label='location' icon='marker' direct=true
-
+                    +array_edit key='tags' icon='tags' direct=true
+                .eight.wide.column
+                    +text_edit key='model' icon='cubes' direct=true
+                    +boolean_edit key='rental' icon='clock' direct=true
+                    +boolean_edit key='post' icon='document' direct=true
+                    if post
+                        +array_edit key='Person' label='person' icon='groups' direct=true
+                        +array_edit key='Company' label='companies' icon='business' direct=true
+                        +array_edit key='Quantity' label='quantities' icon='business' direct=true
+                        +array_edit key='Location' label='location' icon='marker' direct=true
+                        +array_edit key='Organization' label='organization' icon='building' direct=true
+                        +array_edit key='JobTitle' label='job title' icon='manager' direct=true
+                    if rental
+                        +number_edit key='hourly_rate'
+                        +number_edit key='daily_rate'
 
 template(name='related_posts')
     .ui.header related posts
