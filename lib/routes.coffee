@@ -113,7 +113,7 @@ Router.route '/login', -> @render 'login'
 
 Router.route '/', (->
     @layout 'layout'
-    @render 'delta'
+    @render 'home'
     ), name:'home'
 
 Router.route '/user/:username', (->

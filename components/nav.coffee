@@ -31,9 +31,9 @@ if Meteor.isClient
                 Session.set 'loading', false
 
 
-        'click .set_tribe': ->
+        'click .set_shop': ->
             Session.set 'loading', true
-            Meteor.call 'set_facets', 'tribe', ->
+            Meteor.call 'set_facets', 'shop', ->
                 Session.set 'loading', false
 
         'click .set_bookmarked_model': ->

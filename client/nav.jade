@@ -1,29 +1,33 @@
 template(name='nav')
-    //- .ui.borderless.attached.big.menu.topnav
-    //- a.toggle_sidebar.icon.item.sidebar_on
-    //-     i.large.sidebar.icon
-    if is_loading
-        i.huge.loading.grey.yin.yang.icon
-    else 
-        a.ui.icon.circular.button.reset(href='/' title='home')
-            +i name='yin-yang' classes='ui inline mini image'
-    if currentUser
-        unless logging_out
-            //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
-            //- a.icon.item(href="/user/#{currentUser.username}"}}")
-            //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
-            a.ui.icon.circular.button(href="/user/#{currentUser.username}")
-                i.user.icon
-                | #{currentUser.username}
-                | #{currentUser.karma}
-        if logging_out
-            i.large.loading.circle.notch.icon
-        //- else
-        //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
-        //-         i.sign.out.large.icon
-    else
-        a.ui.icon.circular.button(href='/login' title='login') 
-            i.sign.in.large.icon
+    .ui.borderless.attached.big.menu.topnav
+        //- a.toggle_sidebar.icon.item.sidebar_on
+        //-     i.large.sidebar.icon
+        if is_loading
+            .icon.item
+                i.big.loading.grey.yin.yang.icon
+        else 
+            a.icon.item.reset(href='/home' title='home')
+                +i name='home' classes='ui inline mini image'
+            a.icon.item.set_shop(href='/m/shop' title='home')
+                +i name='cart' classes='ui inline mini image'
+        .right.menu
+            if currentUser
+                unless logging_out
+                    //- a.ui.icon.item(href="/user/#{currentUser.username}/notifications"}}")
+                    //- a.icon.item(href="/user/#{currentUser.username}"}}")
+                    //-     i.big.mail.icon(class=mail_icon_class title="#{unread_count} Unread")
+                    a.ui.item(href="/user/#{currentUser.username}")
+                        i.user.icon
+                        | #{currentUser.username}
+                        //- | #{currentUser.karma}
+                if logging_out
+                    i.large.loading.circle.notch.icon
+                //- else
+                //-     a#logout.ui.mobile.hidden.icon.item(href='#' title='Log Out')
+                //-         i.sign.out.large.icon
+            else
+                a.ui.icon.item(href='/login' title='login') 
+                    i.sign.in.large.icon
 
 
 

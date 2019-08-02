@@ -2,8 +2,8 @@ body {
     /* font-family: 'Ubuntu', sans-serif !important; */
     font-size: 110% !important;
     /*line-height: 200% !important;*/
-    filter: invert(100%) !important;
-    background: #3d3d3d !important;
+    /* filter: invert(100%) !important; */
+    /* background: #3d3d3d !important; */
     /* background: rgba(0, 0, 0, .05) !important */
 }
 
@@ -36,11 +36,11 @@ input{
 .shadowed{
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2) !important;
 }
-/* .button, .segment, .label{
-    /* -webkit-border-radius: 5px !important; */
-    /* -moz-border-radius: 5px !important; */
-    /* border-radius: 10px !important; */
-/* } */
+.button, .segment, .label{
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 10px !important;
+}
 
 
 /* .button { */

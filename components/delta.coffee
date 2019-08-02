@@ -60,34 +60,34 @@ if Meteor.isClient
                     Docs.remove delta._id
 
         'click .add_post': ->
-            # model = Docs.findOne
-            #     model:'model'
-            #     slug: Router.current().params.model_slug
-            # console.log model
-            # if model.collection and model.collection is 'users'
-            #     name = prompt 'first and last name'
-            #     split = name.split ' '
-            #     first_name = split[0]
-            #     last_name = split[1]
-            #     username = name.split(' ').join('_')
-            #     # console.log username
-            #     Meteor.call 'add_user', first_name, last_name, username, 'guest', (err,res)=>
-            #         if err
-            #             alert err
-            #         else
-            #             Meteor.users.update res,
-            #                 $set:
-            #                     first_name:first_name
-            #                     last_name:last_name
-            #             Router.go "/m/#{model.slug}/#{res}/edit"
-            # else if model.slug is 'shop'
-            #     new_doc_id = Docs.insert
-            #         model:model.slug
-            #     Router.go "/shop/#{new_doc_id}/edit"
+            model = Docs.findOne
+                model:'model'
+                slug: Router.current().params.model_slug
+            console.log model
+            if model.collection and model.collection is 'users'
+                name = prompt 'first and last name'
+                split = name.split ' '
+                first_name = split[0]
+                last_name = split[1]
+                username = name.split(' ').join('_')
+                # console.log username
+                Meteor.call 'add_user', first_name, last_name, username, 'guest', (err,res)=>
+                    if err
+                        alert err
+                    else
+                        Meteor.users.update res,
+                            $set:
+                                first_name:first_name
+                                last_name:last_name
+                        Router.go "/m/#{model.slug}/#{res}/edit"
+            else if model.slug is 'shop'
+                new_doc_id = Docs.insert
+                    model:model.slug
+                Router.go "/shop/#{new_doc_id}/edit"
             # else
-            new_doc_id = Docs.insert
-                model:'post'
-            Router.go "/post/#{new_doc_id}/edit"
+            # new_doc_id = Docs.insert
+            #     model:'post'
+            # Router.go "/post/#{new_doc_id}/edit"
 
 
         # 'keyup #search': (e)->

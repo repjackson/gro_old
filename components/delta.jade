@@ -1,8 +1,7 @@
 template(name='delta')
     .ui.stackable.padded.grid
         .row
-            .eight.wide.right.aligned.column.scrolling
-                +nav
+            .four.wide.column.scrolling
                 //- if is_admin
                 //- .ui.inline.header
                 //-     //- i.icon(class=icon)
@@ -43,7 +42,7 @@ template(name='delta')
                 else
                     unless is_loading
                         .ui.header no results from filter, click the yin yang to reset
-            .eight.wide.column.scrolling
+            .ten.wide.column
                 each current_delta.result_ids
                     +delta_result
                 

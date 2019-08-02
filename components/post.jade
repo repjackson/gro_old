@@ -3,8 +3,6 @@ template(name='post_page')
         .ui.padded.stackable.grid
             .row
                 .eight.wide.column
-                    .ui.right.aligned.basic.segment
-                        +nav
                     if can_edit
                         a.ui.icon.button(href="/post/#{_id}/edit" title='edit')
                             +ismall name='pencil'
