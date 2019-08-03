@@ -1,7 +1,7 @@
 if Meteor.isClient
     Template.delta.onCreated ->
-        # @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
-        # @autorun -> Meteor.subscribe 'model_fields', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_fields', Router.current().params.model_slug
         @autorun -> Meteor.subscribe 'my_delta'
 
     Template.delta.helpers
@@ -37,11 +37,6 @@ if Meteor.isClient
                 model:'delta'
                 model_filter: Router.current().params.model_slug
 
-        # 'keyup .import_subreddit': (e,t)->
-        #     if e.which is 13
-        #         val = t.$('.import_subreddit').val()
-        #         Meteor.call 'pull_subreddit', val, (err,res)->
-        #             console.log res
 
 
         'click .print_delta': (e,t)->
@@ -50,7 +45,7 @@ if Meteor.isClient
 
         'click .reset': ->
             Session.set 'loading', true
-            Meteor.call 'set_facets', 'post', ->
+            Meteor.call 'set_facets', Router.current().params.model_slug, ->
                 Session.set 'loading', false
 
         'click .delete_delta': (e,t)->
@@ -58,6 +53,11 @@ if Meteor.isClient
             if delta
                 if confirm "delete  #{delta._id}?"
                     Docs.remove delta._id
+        'click .edit_model': ->
+            model = Docs.findOne
+                model:'model'
+                slug: Router.current().params.model_slug
+            Router.go "/model/edit/#{model._id}"
 
         'click .add_post': ->
             model = Docs.findOne
@@ -165,7 +165,7 @@ if Meteor.isClient
                  'disabled'
             else if facet.filters.length > 0 and @name in facet.filters
                 'grey'
-            else ''
+            else 'basic'
 
     Template.delta_result.onRendered ->
         # Meteor.setTimeout ->

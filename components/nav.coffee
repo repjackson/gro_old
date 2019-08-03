@@ -62,6 +62,7 @@ if Meteor.isClient
         # @autorun -> Meteor.subscribe 'my_cart'
 
         @autorun -> Meteor.subscribe 'bookmarked_models'
+        @autorun -> Meteor.subscribe 'model_docs', 'role'
         # @autorun -> Meteor.subscribe 'unread_messages'
 
     Template.nav.helpers

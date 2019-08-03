@@ -33,7 +33,7 @@ template(name='color_view')
 
 template(name='color_icon_edit')
     div
-    .ui.tiny.header
+    .ui.tiny.inline.header
         if icon
             +i name=icon
             //- i.icon(class=icon)
@@ -50,7 +50,7 @@ template(name='color_icon_edit')
 template(name='icon_edit')
     div
     .ui.right.icon.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -341,7 +341,7 @@ template(name='document_view')
     |!{referenced_document.content}
         
 template(name='text_edit')
-    .ui.tiny.header
+    .ui.tiny.inline.header
         if icon
             +i name=icon
             //- i.grey.icon(class=icon)
@@ -358,7 +358,7 @@ template(name='text_edit')
 
 template(name='slug_edit')
     .ui.fluid.icon.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -377,7 +377,7 @@ template(name='slug_view')
     if field_value
         unless header
             div
-            .ui.tiny.header
+            .ui.tiny.inline.header
                 if icon
                     //- i.grey.icon(class=icon)
                     +i name=icon
@@ -406,7 +406,7 @@ template(name='text_view')
     if field_value
         unless header
             div
-            .ui.tiny.inline.header
+            .ui.tiny.header
                 if icon
                     //- i.grey.icon(class=icon)
                     +i name=icon
@@ -425,7 +425,7 @@ template(name='text_view')
 
 template(name='parent_edit')
     .ui.fluid.icon.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             |parent edit
             if icon
                 +i name=icon
@@ -480,7 +480,7 @@ template(name='phone_view')
     if field_value
         unless header
             div
-            .ui.tiny.header
+            .ui.tiny.inline.header
                 if icon
                     //- i.grey.icon(class=icon)
                     +i name=icon
@@ -498,7 +498,7 @@ template(name='phone_view')
 
 template(name='number_edit')
     div
-    .ui.tiny.header
+    .ui.tiny.inline.header
         if icon
             +i name=icon
             //- i.grey.icon(class=icon)
@@ -516,7 +516,7 @@ template(name='number_edit')
 template(name='number_view')
     if field_value
         div
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -534,7 +534,7 @@ template(name='number_view')
 template(name='karma_price_edit')
     div
     .ui.fluid.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -549,7 +549,7 @@ template(name='karma_price_edit')
 template(name='karma_price_view')
     if field_value
         div
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -569,7 +569,7 @@ template(name='karma_price_view')
 template(name='dollar_price_edit')
     div
     .ui.fluid.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -585,7 +585,7 @@ template(name='dollar_price_edit')
 template(name='dollar_price_view')
     if field_value
         div
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -606,7 +606,7 @@ template(name='dollar_price_view')
 
 template(name='date_edit')
     .ui.fluid.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 i.grey.icon(class=icon)            
             if title
@@ -624,7 +624,7 @@ template(name='date_edit')
 template(name='date_view')
     if field_value
         div
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 +i name=icon
                 //- i.grey.icon(class=icon)
@@ -642,7 +642,7 @@ template(name='date_view')
 
 template(name='time_edit')
     .ui.fluid.input
-        .ui.tiny.header
+        .ui.tiny.inline.header
             if icon
                 i.grey.icon(class=icon)            
             if title
@@ -916,7 +916,7 @@ template(name='single_doc_view')
 
 template(name='single_doc_edit')
     div
-    .ui.tiny.header(title=key) 
+    .ui.tiny.inline.header(title=key) 
         if icon
             +i name=icon
             //- i.icon(class=icon)
@@ -947,7 +947,7 @@ template(name='single_doc_edit')
 
 template(name='multi_doc_edit')
     div
-    .ui.tiny.header(title=key)
+    .ui.tiny.inline.header(title=key)
         if icon
             +i name=icon classes='ui avatar image'
             //- i.icon(class=icon)
@@ -1033,7 +1033,7 @@ template(name='single_user_edit')
 
 
 template(name='single_user_view')
-    .ui.tiny.header 
+    .ui.tiny.inline.header 
         if icon
             +i name=icon    
         |#{title}
@@ -1093,7 +1093,7 @@ template(name='single_person_edit')
 
 
 template(name='multi_user_edit')
-    .ui.tiny.header
+    .ui.tiny.inline.header
         if icon
             +i name=icon
             //- i.icon(class=icon)
@@ -1138,7 +1138,7 @@ template(name='multi_user_edit')
 
 template(name='multi_doc_input')
     //- .ui.form
-        //- .ui.tiny.header
+        //- .ui.tiny.inline.header
         //-     if icon
         //-         i.icon(class=icon)
         //-     if title

@@ -78,7 +78,7 @@ Template.registerHelper 'is_user', () ->
 
 Template.registerHelper 'user_is_user', () -> if @roles and 'user' in @roles then true else false
 
-Template.registerHelper 'is_eric', () -> if Meteor.userId() and 'exYMs7xwuJ9QZJZ33' is Meteor.userId() then true else false
+Template.registerHelper 'is_eric', () -> if Meteor.userId() and 'ytjpFxiwnWaJELZEd' is Meteor.userId() then true else false
 
 Template.registerHelper 'current_user', () ->  Meteor.users.findOne username:Router.current().params.username
 Template.registerHelper 'is_current_user', () ->  Meteor.user().username is Router.current().params.username
@@ -120,6 +120,34 @@ Template.registerHelper 'field_value', () ->
         parent = Template.parentData(6)
     if parent
         parent["#{@key}"]
+
+
+Template.registerHelper 'fields', () ->
+    model = Docs.findOne
+        model:'model'
+        slug:Router.current().params.model_slug
+    if model
+        Docs.find {
+            model:'field'
+            parent_id:model._id
+            view_roles:$in:Meteor.user().roles
+        }, sort:rank:1
+
+Template.registerHelper 'edit_fields', () ->
+    model = Docs.findOne
+        model:'model'
+        slug:Router.current().params.model_slug
+    if model
+        Docs.find {
+            model:'field'
+            parent_id:model._id
+            edit_roles:$in:Meteor.user().roles
+        }, sort:rank:1
+
+Template.registerHelper 'current_user', (input) ->
+    Meteor.user() and Meteor.user().username is Router.current().params.username
+
+
 
 
 Template.registerHelper 'is_post', () -> @model is 'post'

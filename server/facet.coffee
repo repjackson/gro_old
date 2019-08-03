@@ -7,23 +7,20 @@ Meteor.methods
         model = Docs.findOne
             model:'model'
             slug:model_slug
-        # console.log 'model', model
-        # fields =
-        #     Docs.find
-        #         model:'field'
-        #         parent_id:model._id
+        console.log 'model', model
+        fields =
+            Docs.find
+                model:'field'
+                parent_id:model._id
         # fields = [
         #     'tags'
         #     'Person'
         #     'Location'
         # ]
         # console.log 'fields', fields.fetch()
-        # Docs.update delta._id,
-        #     $set:model_filter:model_slug
         Docs.update delta._id,
-            $set:model_filter:'post'
+            $set:model_filter:model_slug
 
-        # Docs.update delta._id,
         #     $set:facets:[
         #         {
         #             key:'_timestamp_tags'
@@ -32,165 +29,44 @@ Meteor.methods
         #         }
         #     ]
 
-        facets = [
-            {
-                title:'type'
-                icon:'cube'
-                key:'model'
-                rank:6
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'tags'
-                icon:'tags'
-                key:'tags'
-                rank:10
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'location'
-                icon:'marker'
-                key:'Location'
-                rank:20
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'person'
-                icon:'user-male'
-                key:'Person'
-                rank:33
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'author'
-                icon:'user-male'
-                key:'_author_username'
-                rank:33
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'upvoters'
-                icon:'thumbs-up'
-                key:'upvoter_usernames'
-                rank:35
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            {
-                title:'downvoters'
-                icon:'thumbs-down'
-                key:'downvoter_usernames'
-                rank:36
-                field_type:'array'
-                filters:[]
-                res:[]
-            }
-            # {
-            #     title:'job title'
-            #     icon:'business'
-            #     key:'JobTitle'
-            #     rank:35
-            #     field_type:'array'
-            #     filters:[]
-            #     res:[]
-            # }
-            # {
-            #     title:'company'
-            #     icon:'business'
-            #     key:'Company'
-            #     rank:37
-            #     field_type:'array'
-            #     filters:[]
-            #     res:[]
-            # }
-            # {
-            #     title:'organization'
-            #     icon:'business'
-            #     key:'Organization'
-            #     rank:39
-            #     field_type:'array'
-            #     filters:[]
-            #     res:[]
-            # }
-            # {
-            #     title:'sentiment'
-            #     icon:'user-male'
-            #     key:'doc_sentiment_label'
-            #     rank:34
-            #     field_type:'text'
-            #     filters:[]
-            #     res:[]
-            # }
-            # {
-            #     title:'quantities'
-            #     icon:'user-male'
-            #     key:'Quantity'
-            #     rank:36
-            #     field_type:'array'
-            #     filters:[]
-            #     res:[]
-            # }
-            # {
-            #     title:'when'
-            #     icon:'clock'
-            #     key:'_timestamp_tags'
-            #     rank:40
-            #     field_type:'array'
-            #     filters:[]
-            #     res:[]
-            # }
-
-        ]
-
         Docs.update delta._id,
-            $set:facets:facets
-        # for field in fields.fetch()
-        #     if field.faceted is true
-        #         Docs.update delta._id,
-        #             $addToSet:
-        #                 facets: {
-        #                     title:field.title
-        #                     icon:field.icon
-        #                     key:field.key
-        #                     rank:field.rank
-        #                     field_type:field.field_type
-        #                     filters:[]
-        #                     res:[]
-        #                 }
+            $set:facets:[]
+        for field in fields.fetch()
+            if field.faceted is true
+                Docs.update delta._id,
+                    $addToSet:
+                        facets: {
+                            title:field.title
+                            icon:field.icon
+                            key:field.key
+                            rank:field.rank
+                            field_type:field.field_type
+                            filters:[]
+                            res:[]
+                        }
         Meteor.call 'fum', delta._id
 
 
     fum: (delta_id)->
         delta = Docs.findOne delta_id
-        # model = Docs.findOne
-        #     model:'model'
-        #     slug:delta.model_filter
-        built_query = {model:'post'}
+        model = Docs.findOne
+            model:'model'
+            slug:delta.model_filter
+        built_query = {}
 
-        # fields =
-        #     Docs.find
-        #         model:'field'
-        #         parent_id:model._id
-        # if model.collection and model.collection is 'users'
-        #     built_query.roles = $in:[delta.model_filter]
-        # else
-        #     unless delta.model_filter is 'post'
-        #         built_query.model = delta.model_filter
+        fields =
+            Docs.find
+                model:'field'
+                parent_id:model._id
+        if model.collection and model.collection is 'users'
+            built_query.roles = $in:[delta.model_filter]
+        else
+            unless delta.model_filter is 'post'
+                built_query.model = delta.model_filter
 
-        # if delta.model_filter is 'model'
-        #     unless 'dev' in Meteor.user().roles
-        #         built_query.view_roles = $in:Meteor.user().roles
+        if delta.model_filter is 'model'
+            unless 'dev' in Meteor.user().roles
+                built_query.view_roles = $in:Meteor.user().roles
 
         for facet in delta.facets
             if facet.filters.length > 0
@@ -207,7 +83,6 @@ Meteor.methods
             local_return = []
 
             agg_res = Meteor.call 'agg', built_query, facet.key
-            # agg_res = Meteor.call 'agg', built_query, facet.key
 
             if agg_res
                 Docs.update { _id:delta._id, 'facets.key':facet.key},
@@ -216,7 +91,7 @@ Meteor.methods
         modifier =
             {
                 fields:_id:1
-                limit:3
+                limit:30
                 sort:_timestamp:-1
             }
 
@@ -242,7 +117,7 @@ Meteor.methods
         # delta = Docs.findOne delta_id
 
     agg: (query, key)->
-        limit=20
+        limit=42
         options = { explain:false }
         pipe =  [
             { $match: query }

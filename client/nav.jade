@@ -4,12 +4,20 @@ template(name='nav')
         //-     i.large.sidebar.icon
         if is_loading
             .icon.item
-                i.big.loading.grey.yin.yang.icon
+                i.big.loading.grey.notched.circle.icon
         else 
-            a.icon.item.reset(href='/home' title='home')
+            a.icon.item.reset(href='/' title='home')
                 +i name='home' classes='ui inline mini image'
             a.icon.item.set_shop(href='/m/shop' title='home')
-                +i name='cart' classes='ui inline mini image'
+                +i name='building' classes='ui inline mini image'
+            a.icon.item.set_shop(href='/m/shop' title='home')
+                +i name='building' classes='ui inline mini image'
+            a.icon.item.set_posts(href='/m/shop' title='home')
+                +i name='posts' classes='ui inline mini image'
+            a.icon.item.set_shop(href='/m/shop' title='home')
+                +i name='building' classes='ui inline mini image'
+            a.icon.item.set_shop(href='/m/shop' title='home')
+                +i name='building' classes='ui inline mini image'
         .right.menu
             if currentUser
                 unless logging_out
@@ -79,15 +87,13 @@ template(name='role_switcher')
             //- +i name='anonymous-mask'
             i.shield.icon(title='role switcher')
             |#{username} role switcher
-        //- if is_eric
-        //-     +user_array_element_toggle key='roles' value='dev' user=currentUser
-        //- if current_user
-        //-     with current_user
-        //-         +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
-        //- else if currentUser
-        //-     with currentUser
-        //- +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
-        +user_array_element_toggle key='roles' value='dev' user=currentUser
+        if is_eric
+            +user_array_element_toggle key='roles' value='dev' user=currentUser
+        if current_user
+            with current_user
+                +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
+        +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
+        //- +user_array_element_toggle key='roles' value='dev' user=currentUser
         //- +user_array_element_toggle key='roles' value='user' user=currentUser
         //- +user_array_element_toggle key='roles' value='staff' user=currentUser
         //- +user_array_element_toggle key='roles' value='resident' user=currentUser
