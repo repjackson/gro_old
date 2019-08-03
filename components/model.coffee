@@ -4,6 +4,10 @@ if Meteor.isClient
         @autorun -> Meteor.subscribe 'model_fields', Router.current().params.model_slug
         @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
 
+    Template.model_edit.onRendered ->
+        Meteor.setTimeout ->
+            $('.accordion').accordion()
+        , 1000
 
 
     # Template.model_edit.events

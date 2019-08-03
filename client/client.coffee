@@ -1,6 +1,7 @@
 # Meteor.startup ->
 #     scheduler.init "scheduler_here", new Date()
 #     scheduler.meteor(Docs.find(model:'event'), Docs);
+@selected_tags = new ReactiveArray []
 
 $.cloudinary.config
     cloud_name:"facet"

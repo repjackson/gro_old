@@ -28,9 +28,14 @@ template(name='model_edit')
                     .ui.inline.header fields
                     .ui.icon.circular.basic.large.button.add_field
                         i.plus.green.icon
-                    each fields
-                        .ui.smoothed.segment
-                            +field_edit
+                    .ui.fluid.styled.accordion
+                        each fields
+                            .title 
+                                +ismall name=icon
+                                .ui.inline.header 
+                                    |#{title}
+                            .content
+                                +field_edit
 
 
 template(name='model_view')

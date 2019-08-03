@@ -30,7 +30,7 @@ template(name='user_layout')
                         //- |direct message
                     if is_current_user
                         .ui.icon.button.logout(title='log out')
-                            +i name='exit-sign'
+                            +ismall name='exit-sign'
                         a.ui.small.button.logout_other_clients(href="#")
                             |logout other clients
                     if is_admin
@@ -48,42 +48,6 @@ template(name='user_layout')
     //- +footer 
 
 
-template(name='user_products')
-    .ui.header 
-        +i name='shop'
-        |#{user_from_username_param.username}'s products
-        .ui.cards
-            each products
-                +user_product
-            
-            
-template(name='user_product')
-    .ui.link.card.goto_shop_item_page
-        img.ui.image(src="{{c.url image_id height=200 width=300 crop='lpad'}}")
-        .content
-            .header #{title}
-            .meta #{when}
-            
-        .content
-            .right.floated 
-                if for_sale
-                    span(title='for sale')
-                        i.grey.cart.icon
-                        $#{dollar_price}
-                if rentable
-                    div
-                    span(title='rentable')
-                        i.grey.clock.icon
-                        $#{hourly_rate}
-            +small_author_info
-            //- img.ui.avatar.image(src="{{c.url author.image_id height=200 width=200 crop='fit'}}")
-            //- |#{_author_username}
-        .extra.content
-            .right.floated 
-                |#{sales}
-                i.money.icon
-            i.eye.icon
-            |#{views}
 
     
     

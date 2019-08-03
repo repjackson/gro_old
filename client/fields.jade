@@ -131,7 +131,7 @@ template(name='image_view')
         //-     |#{key}
         //- else
         //-     |#{this}
-        img.ui.centered.rounded.large.invert.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
+        img.ui.centered.rounded.large.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- img.ui.centered.rounded.image(src="{{c.url field_value gravity='face' crop='fit'}}" class=classes)
         //- a(href="{{c.url field_value gravity='face' crop='fit'}}")
         //-     |download
@@ -200,7 +200,7 @@ template(name='image_edit')
         .field
             if field_value
                 //- label Image
-                img.ui.fluid.centered.rounded.invert.image(src="{{c.url field_value height=500 gravity='face' crop='fill'}}")
+                img.ui.fluid.centered.rounded.image(src="{{c.url field_value height=500 gravity='face' crop='fill'}}")
                 a#remove_photo.ui.right.corner.link.label
                     i.remove.red.link.icon
             else
@@ -267,28 +267,27 @@ template(name='textarea_edit')
 
 
 
-//- template(name='html_edit')
-//-     .ui.form
-//-         .field
-//-             label 
-//-                 if icon
-//-                     i.icon(name=icon)
-//-                     //- +i name=icon classes='ui avatar image'
-//-                     //- i.icon(class=icon)
-//-                 if title
-//-                     |#{title}
-//-                 else if key
-//-                     |#{key}
-//-                 else
-//-                     |#{this}
-//-     .froala-container
-//-         +froalaReactive getFEContext
-//-     //- if is_dev
-//-     +call_watson mode='html'
-    //- div
-    //- +tone mode='html'
-    //- if watson
-    //-     +watson_view
+template(name='html_edit')
+    .ui.form
+        .field
+            label 
+                if icon
+                    i.icon(name=icon)
+                    //- +i name=icon classes='ui avatar image'
+                    //- i.icon(class=icon)
+                if title
+                    |#{title}
+                else if key
+                    |#{key}
+                else
+                    |#{this}
+    .froala-container
+        +froalaReactive getFEContext
+    //- if is_dev
+    +call_watson mode='html'
+    div
+    if watson
+        +watson_view
         
         
 template(name='html_view')
@@ -837,14 +836,14 @@ template(name='youtube_edit')
             |Youtube Id
         input.youtube_id(type='text' value=field_value placeholder=placeholder autocomplete="off")
     if field_value
-        iframe.invert(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
+        iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
 
 template(name='youtube_view')
     if field_value
         if icon
             +i name=icon
             //- i.icon(class=icon)
-        .ui.embed.invert(data-source="youtube" data-id=field_value)
+        .ui.embed(data-source="youtube" data-id=field_value)
 
         //- // iframe(width='560' height='315' src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')
         //- iframe(src="https://www.youtube.com/embed/#{field_value}" frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='')

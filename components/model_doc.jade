@@ -12,7 +12,7 @@ template(name='model_doc_edit')
                     #delete_doc.ui.icon.circular.large.basic.button
                         i.trash.icon
                             
-                .ten.wide.column.scrolling
+                .ten.wide.column
                     //- |#{model}
                     each fields
                         +Template.dynamic template=edit_template 

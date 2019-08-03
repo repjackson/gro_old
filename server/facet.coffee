@@ -61,7 +61,7 @@ Meteor.methods
         if model.collection and model.collection is 'users'
             built_query.roles = $in:[delta.model_filter]
         else
-            unless delta.model_filter is 'post'
+            unless delta.model_filter is 'all'
                 built_query.model = delta.model_filter
 
         if delta.model_filter is 'model'

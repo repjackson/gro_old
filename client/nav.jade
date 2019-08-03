@@ -8,16 +8,15 @@ template(name='nav')
         else 
             a.icon.item.reset(href='/' title='home')
                 +i name='home' classes='ui inline mini image'
-            a.icon.item.set_shop(href='/m/shop' title='home')
-                +i name='building' classes='ui inline mini image'
-            a.icon.item.set_shop(href='/m/shop' title='home')
-                +i name='building' classes='ui inline mini image'
-            a.icon.item.set_posts(href='/m/shop' title='home')
-                +i name='posts' classes='ui inline mini image'
-            a.icon.item.set_shop(href='/m/shop' title='home')
-                +i name='building' classes='ui inline mini image'
-            a.icon.item.set_shop(href='/m/shop' title='home')
-                +i name='building' classes='ui inline mini image'
+            a.icon.item.reset(href='/users' title='users')
+                +i name='groups' classes='ui inline mini image'
+            a.icon.item(href='/shop' title='shop')
+                +i name='shop' classes='ui inline mini image'
+            a.icon.item.reset(href='/chat' title='chat')
+                +i name='chat' classes='ui inline mini image'
+            if is_admin
+                a.icon.item(href='/admin' title='admin')
+                    +i name='user-shield' classes='ui inline mini image'
         .right.menu
             if currentUser
                 unless logging_out
@@ -88,11 +87,11 @@ template(name='role_switcher')
             i.shield.icon(title='role switcher')
             |#{username} role switcher
         if is_eric
-            +user_array_element_toggle key='roles' value='dev' user=currentUser
+            //- +user_array_element_toggle key='roles' value='dev' user=currentUser
+            +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
         if current_user
             with current_user
                 +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
-        +multi_doc_edit key='roles' label='roles' ref_model='role' direct=true
         //- +user_array_element_toggle key='roles' value='dev' user=currentUser
         //- +user_array_element_toggle key='roles' value='user' user=currentUser
         //- +user_array_element_toggle key='roles' value='staff' user=currentUser

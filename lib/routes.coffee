@@ -70,6 +70,7 @@ Router.route '/user/:username/edit', -> @render 'user_edit'
 Router.route '/p/:slug', -> @render 'page'
 Router.route '/settings', -> @render 'settings'
 Router.route '/users', -> @render 'users'
+Router.route '/user/add', -> @render 'add_user'
 # Router.route "/meal/:meal_id", -> @render 'meal_doc'
 
 Router.route '/reset_password/:token', (->

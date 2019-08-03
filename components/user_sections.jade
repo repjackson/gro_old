@@ -4,11 +4,26 @@ template(name='user_about')
     +text_view key='tagline' label='tag line' icon='signature' direct=true
     +array_view key='tags' label='tags' icon='tags' direct=true
     +array_view key='location_tags' label='location tags' icon='location' direct=true
-    //- +text_view key='spirit_animal' label='spirit animal' icon='year-of-monkey' direct=true
-    //- +link_view key='link' label='link' icon='link' direct=true
+    +text_view key='spirit_animal' label='spirit animal' icon='year-of-monkey' direct=true
+    +link_view key='link' label='link' icon='link' direct=true
+    +user_products
+    +user_services
+    +user_posts
 
 
+template(name='user_services')
+    .ui.header 
+        +i name='service'
+        |user services
+    each services
+        .ui.header #{title}
 
+template(name='user_posts')
+    .ui.header 
+        +i name='note'
+        |user posts
+    each posts
+        .ui.header #{title}
 
 
 
@@ -16,3 +31,42 @@ template(name='user_notifications')
     .ui.header 
         +i name='appointment-reminders'
         |notifications
+
+
+
+template(name='user_products')
+    .ui.header 
+        +i name='shop'
+        |#{user_from_username_param.username}'s products
+        .ui.three.stackable.cards
+            each products
+                +user_product
+            
+            
+template(name='user_product')
+    .ui.link.card.goto_shop_item_page
+        img.ui.image(src="{{c.url picture height=200 width=300 crop='lpad'}}")
+        .content
+            .header #{title}
+            .meta #{when}
+            
+        .content
+            .right.floated 
+                if for_sale
+                    span(title='for sale')
+                        i.grey.cart.icon
+                        $#{dollar_price}
+                if rentable
+                    div
+                    span(title='rentable')
+                        i.grey.clock.icon
+                        $#{hourly_rate}
+            +small_author_info
+            //- img.ui.avatar.image(src="{{c.url author.image_id height=200 width=200 crop='fit'}}")
+            //- |#{_author_username}
+        .extra.content
+            .right.floated 
+                |#{sales}
+                i.money.icon
+            i.eye.icon
+            |#{views}
